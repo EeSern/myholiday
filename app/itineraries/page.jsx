@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase/client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { Compass, FolderOpen } from 'lucide-react'
 
 // ── Sub-component for fetching images ────────────────────────
 function CityImage({ city, country, className = "" }) {
@@ -371,7 +372,7 @@ export default function ItinerariesPage() {
               </div>
             ) : (
               <div className="bg-muted/20 border border-dashed border-border rounded-2xl py-12 text-center text-disabled">
-                <div className="text-3xl mb-3 opacity-30 text-charcoal">🧭</div>
+                <Compass className="w-9 h-9 mx-auto mb-3 opacity-30 text-charcoal" aria-hidden="true" />
                 <p className="text-sm font-body">No active planning sessions found.</p>
                 <Link href="/quiz" className="mt-4 inline-block text-amber text-xs font-bold uppercase hover:underline">Start Exploring →</Link>
               </div>
@@ -509,7 +510,7 @@ export default function ItinerariesPage() {
               </div>
             ) : (
               <div className="bg-white/50 border-2 border-dashed border-border/40 rounded-3xl py-12 text-center text-tertiary text-sm">
-                <div className="text-4xl mb-4 opacity-30 text-charcoal">📂</div>
+                <FolderOpen className="w-10 h-10 mx-auto mb-4 opacity-30 text-charcoal" aria-hidden="true" />
                 <p>No exported itineraries found yet.</p>
               </div>
             )}

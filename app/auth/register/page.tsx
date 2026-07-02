@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import type { ComponentType } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { signInWithGoogle, signUpWithEmail } from '@/lib/supabase/auth'
 import { getCurrentUser } from '@/lib/supabase/client'
+import { Luggage, Mail, Map } from 'lucide-react'
 
 type Role = 'traveller' | 'guide'
 
@@ -86,7 +88,7 @@ export default function RegisterPage() {
     return (
       <main className="min-h-screen bg-warmwhite flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-md border border-border px-6 sm:px-8 py-10 text-center space-y-4">
-          <div className="text-5xl">📬</div>
+          <Mail className="w-12 h-12 mx-auto text-amber" aria-hidden="true" />
           <h2 className="text-2xl font-extrabold font-display text-charcoal">Check your inbox!</h2>
           <p className="text-sm font-body text-secondary leading-relaxed">
             We&apos;ve sent a confirmation link to <strong>{email}</strong>.
@@ -139,14 +141,14 @@ export default function RegisterPage() {
               <RoleCard
                 active={role === 'traveller'}
                 onClick={() => setRole('traveller')}
-                emoji="🧳"
+                Icon={Luggage}
                 label="Traveller"
                 description="Explore destinations & plan trips"
               />
               <RoleCard
                 active={role === 'guide'}
                 onClick={() => setRole('guide')}
-                emoji="🗺️"
+                Icon={Map}
                 label="Tour Guide"
                 description="Connect with travellers in my city"
               />
@@ -260,11 +262,11 @@ export default function RegisterPage() {
 }
 
 function RoleCard({
-  active, onClick, emoji, label, description,
+  active, onClick, Icon, label, description,
 }: {
   active: boolean
   onClick: () => void
-  emoji: string
+  Icon: ComponentType<{ className?: string }>
   label: string
   description: string
 }) {
@@ -276,7 +278,7 @@ function RoleCard({
         active ? 'border-amber bg-amber/5' : 'border-border hover:border-amber/50'
       }`}
     >
-      <div className="text-xl mb-1">{emoji}</div>
+      <Icon className={`w-5 h-5 mb-1 ${active ? 'text-amber' : 'text-secondary'}`} aria-hidden="true" />
       <p className={`text-xs font-semibold font-body ${active ? 'text-amber' : 'text-charcoal'}`}>
         {label}
       </p>

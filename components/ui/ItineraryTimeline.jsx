@@ -1,4 +1,22 @@
 import React from 'react';
+import { BedDouble, Car, MapPin, Soup, Target, Utensils } from 'lucide-react';
+
+const TYPE_ICON = {
+  hotel: BedDouble,
+  restaurant: Utensils,
+  attraction: Target,
+  food_recommendation: Soup,
+  transport: Car,
+};
+
+const TYPE_TONE = {
+  hotel: 'text-amber',
+  restaurant: 'text-red-500',
+  attraction: 'text-blue-500',
+  food_recommendation: 'text-pink-500',
+  transport: 'text-gray-500',
+  place: 'text-secondary',
+};
 
 export default function ItineraryTimeline({ listing, isEditable = false, onSuggestEdits = () => {}, isGuideEdited = false }) {
   const itineraryContent = listing?.itinerary_content || {};
@@ -15,7 +33,8 @@ export default function ItineraryTimeline({ listing, isEditable = false, onSugge
             <div className="p-6 flex flex-col gap-5">
               {Array.isArray(activities) && activities.map((activity, index) => {
                 const isLast = index === activities.length - 1;
-                const icon = activity.type === 'hotel' ? '🏨' : activity.type === 'attraction' ? '🎯' : activity.type === 'food_recommendation' ? '🍜' : activity.type === 'transport' ? '🚗' : '📍';
+                const Icon = TYPE_ICON[activity.type] ?? MapPin;
+                const iconColor = TYPE_TONE[activity.type] ?? TYPE_TONE.place;
                 
                 return (
                   <div key={index} className="flex gap-5">
@@ -38,8 +57,9 @@ export default function ItineraryTimeline({ listing, isEditable = false, onSugge
                         {activity.notes || activity.description || 'No description provided.'}
                       </p>
                       <div className="flex gap-2">
-                        <span className="text-[10px] font-bold tracking-widest uppercase bg-white border border-border px-2.5 py-1.5 rounded-lg text-secondary">
-                          {icon} {activity.type || 'place'}
+                        <span className="text-[10px] font-bold tracking-widest uppercase bg-white border border-border px-2.5 py-1.5 rounded-lg text-secondary inline-flex items-center gap-1.5">
+                          <Icon className={`w-3.5 h-3.5 ${iconColor}`} aria-hidden="true" />
+                          {activity.type || 'place'}
                         </span>
                       </div>
                     </div>

@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import type { User } from '@supabase/supabase-js'
 import { getCurrentUser, supabase } from '@/lib/supabase/client'
 import { signOut } from '@/lib/supabase/auth'
+import { Sparkles } from 'lucide-react'
 
 export default function Navbar() {
   const [user, setUser]       = useState<User | null>(null)
@@ -186,7 +187,12 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <MobileNavLink href="/quiz" onClick={close}>Plan a Trip ✨</MobileNavLink>
+                <MobileNavLink href="/quiz" onClick={close}>
+                  <span className="inline-flex items-center gap-1.5">
+                    Plan a Trip
+                    <Sparkles className="w-3.5 h-3.5 text-amber" aria-hidden="true" />
+                  </span>
+                </MobileNavLink>
                 <MobileNavLink href="/destinations" onClick={close}>Destinations</MobileNavLink>
                 <MobileNavLink href="/itineraries" onClick={close}>Itineraries</MobileNavLink>
                 <MobileNavLink href="/marketplace" onClick={close}>Marketplace</MobileNavLink>

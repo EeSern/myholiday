@@ -1,24 +1,25 @@
 'use client'
 
 import { useState } from 'react'
+import { CalendarDays, Coffee, CreditCard, DollarSign, Footprints, Gem, PersonStanding, Sparkles, Trophy, Users } from 'lucide-react'
 
 const BUDGETS = [
-  { value: 'Budget', icon: '💰', desc: 'Hostels & street food' },
-  { value: 'Mid-range', icon: '💳', desc: 'Comfortable hotels' },
-  { value: 'Luxury', icon: '✨', desc: 'Fine dining & resorts' },
+  { value: 'Budget', Icon: DollarSign, iconClass: 'text-green-700', bgClass: 'bg-green-50', desc: 'Hostels & street food' },
+  { value: 'Mid-range', Icon: CreditCard, iconClass: 'text-blue-700', bgClass: 'bg-blue-50', desc: 'Comfortable hotels' },
+  { value: 'Luxury', Icon: Gem, iconClass: 'text-amber-700', bgClass: 'bg-amber-50', desc: 'Fine dining & resorts' },
 ]
 
 const PACES = [
-  { value: 'Relaxed', icon: '☕', desc: '1-2 activities/day' },
-  { value: 'Balanced', icon: '🚶', desc: '3-4 activities/day' },
-  { value: 'Packed', icon: '🏃', desc: '5+ activities/day' },
+  { value: 'Relaxed', Icon: Coffee, iconClass: 'text-amber-800', bgClass: 'bg-amber-50', desc: '1-2 activities/day' },
+  { value: 'Balanced', Icon: Footprints, iconClass: 'text-blue-700', bgClass: 'bg-blue-50', desc: '3-4 activities/day' },
+  { value: 'Packed', Icon: Trophy, iconClass: 'text-red-700', bgClass: 'bg-red-50', desc: '5+ activities/day' },
 ]
 
 const GROUPS = [
-  { value: 'Solo', icon: '🧍' },
-  { value: 'Couple', icon: '👫' },
-  { value: 'Small Group', icon: '👨‍👩‍👧' },
-  { value: 'Large Group', icon: '👥' },
+  { value: 'Solo', Icon: PersonStanding, iconClass: 'text-stone-700', bgClass: 'bg-stone-100' },
+  { value: 'Couple', Icon: Users, iconClass: 'text-pink-700', bgClass: 'bg-pink-50' },
+  { value: 'Small Group', Icon: Users, iconClass: 'text-indigo-700', bgClass: 'bg-indigo-50' },
+  { value: 'Large Group', Icon: Users, iconClass: 'text-purple-700', bgClass: 'bg-purple-50' },
 ]
 
 export default function QuickIntakeModal({ city, onSubmit }) {
@@ -72,7 +73,7 @@ export default function QuickIntakeModal({ city, onSubmit }) {
             <label className="block text-xs font-bold uppercase tracking-wider text-disabled mb-3">When are you going?</label>
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-lg">🗓️</span>
+                <CalendarDays className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-amber" aria-hidden="true" />
                 <input
                   type="date"
                   min={today}
@@ -82,7 +83,7 @@ export default function QuickIntakeModal({ city, onSubmit }) {
                 />
               </div>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-lg">🗓️</span>
+                <CalendarDays className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-amber" aria-hidden="true" />
                 <input
                   type="date"
                   min={dates.start || today}
@@ -99,7 +100,9 @@ export default function QuickIntakeModal({ city, onSubmit }) {
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-disabled mb-3">Trip Pace</label>
               <div className="grid grid-cols-3 gap-2">
-                {PACES.map(p => (
+                {PACES.map(p => {
+                  const Icon = p.Icon
+                  return (
                   <button
                     key={p.value}
                     onClick={() => setPace(p.value)}
@@ -107,10 +110,13 @@ export default function QuickIntakeModal({ city, onSubmit }) {
                       pace === p.value ? 'bg-amber/5 border-amber shadow-sm ring-1 ring-amber/20' : 'bg-white border-border hover:border-amber/30'
                     }`}
                   >
-                    <span className="text-xl">{p.icon}</span>
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center ${p.bgClass}`}>
+                      <Icon className={`w-[18px] h-[18px] ${p.iconClass}`} aria-hidden="true" />
+                    </span>
                     <span className="text-[10px] font-bold text-charcoal">{p.value}</span>
                   </button>
-                ))}
+                  )
+                })}
               </div>
             </div>
 
@@ -118,7 +124,9 @@ export default function QuickIntakeModal({ city, onSubmit }) {
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-disabled mb-3">Budget Level</label>
               <div className="grid grid-cols-3 gap-2">
-                {BUDGETS.map(b => (
+                {BUDGETS.map(b => {
+                  const Icon = b.Icon
+                  return (
                   <button
                     key={b.value}
                     onClick={() => setBudget(b.value)}
@@ -126,10 +134,13 @@ export default function QuickIntakeModal({ city, onSubmit }) {
                       budget === b.value ? 'bg-amber/5 border-amber shadow-sm ring-1 ring-amber/20' : 'bg-white border-border hover:border-amber/30'
                     }`}
                   >
-                    <span className="text-xl">{b.icon}</span>
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center ${b.bgClass}`}>
+                      <Icon className={`w-[18px] h-[18px] ${b.iconClass}`} aria-hidden="true" />
+                    </span>
                     <span className="text-[10px] font-bold text-charcoal">{b.value}</span>
                   </button>
-                ))}
+                  )
+                })}
               </div>
             </div>
           </div>
@@ -138,7 +149,9 @@ export default function QuickIntakeModal({ city, onSubmit }) {
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-disabled mb-3">Who are you travelling with?</label>
             <div className="grid grid-cols-4 gap-2">
-              {GROUPS.map(g => (
+              {GROUPS.map(g => {
+                const Icon = g.Icon
+                return (
                 <button
                   key={g.value}
                   onClick={() => setGroupSize(g.value)}
@@ -146,10 +159,13 @@ export default function QuickIntakeModal({ city, onSubmit }) {
                     groupSize === g.value ? 'bg-amber/5 border-amber shadow-sm ring-1 ring-amber/20' : 'bg-white border-border hover:border-amber/30'
                   }`}
                 >
-                  <span className="text-xl">{g.icon}</span>
+                  <span className={`w-8 h-8 rounded-lg flex items-center justify-center ${g.bgClass}`}>
+                    <Icon className={`w-[18px] h-[18px] ${g.iconClass}`} aria-hidden="true" />
+                  </span>
                   <span className="text-xs font-bold text-charcoal">{g.value}</span>
                 </button>
-              ))}
+                )
+              })}
             </div>
           </div>
 
@@ -159,7 +175,10 @@ export default function QuickIntakeModal({ city, onSubmit }) {
             disabled={!isValid}
             className="w-full bg-charcoal text-warmwhite font-bold py-4 rounded-2xl hover:bg-amber transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed mt-4 shadow-lg"
           >
-            Start Planning My Trip ✨
+            <span className="inline-flex items-center justify-center gap-2">
+              Start Planning My Trip
+              <Sparkles className="w-4 h-4" aria-hidden="true" />
+            </span>
           </button>
         </div>
       </div>

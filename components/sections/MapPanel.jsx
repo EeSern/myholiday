@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, useMapEvents 
 import { useEffect, useState, useCallback, useRef } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { BedDouble, Check, Clock, Coffee, MapPinned, MapPin, ShoppingBag, Star, Target, Utensils } from 'lucide-react'
 
 // ── Time slot options (matching ItineraryPanel) ───────────────
 const TIME_LABELS = ['All Day', 'Morning', 'Noon', 'Afternoon', 'Evening', 'Night']
@@ -115,11 +116,25 @@ const PIN_BG = {
   transport:  '#6B7280',
 }
 
-const PIN_EMOJI = {
-  hotel:      '🏨',
-  restaurant: '🍽',
-  attraction: '🎯',
-  transport:  '🚌',
+const PIN_ICON_LABEL = {
+  hotel:      'H',
+  restaurant: 'R',
+  attraction: 'A',
+  transport:  'T',
+}
+
+const PIN_ICON = {
+  hotel:      BedDouble,
+  restaurant: Utensils,
+  attraction: Target,
+  transport:  MapPin,
+}
+
+const PIN_ICON_COLOUR = {
+  hotel:      'text-amber',
+  restaurant: 'text-red-500',
+  attraction: 'text-blue-500',
+  transport:  'text-gray-500',
 }
 
 const LEGEND_DOT_CLASS = {
@@ -131,11 +146,11 @@ const LEGEND_DOT_CLASS = {
 
 // Nearby search category definitions
 const NEARBY_CATEGORIES = [
-  { key: 'restaurant', label: '🍽 Restaurants', type: 'restaurant' },
-  { key: 'attraction', label: '🎯 Attractions', type: 'attraction' },
-  { key: 'hotel',      label: '🏨 Hotels',      type: 'hotel' },
-  { key: 'cafe',       label: '☕ Cafes',        type: 'cafe' },
-  { key: 'shopping',   label: '🛍 Shopping',     type: 'shopping' },
+  { key: 'restaurant', label: 'Restaurants', type: 'restaurant', Icon: Utensils, iconColour: 'text-red-500' },
+  { key: 'attraction', label: 'Attractions', type: 'attraction', Icon: Target, iconColour: 'text-blue-500' },
+  { key: 'hotel',      label: 'Hotels',      type: 'hotel', Icon: BedDouble, iconColour: 'text-amber' },
+  { key: 'cafe',       label: 'Cafes',        type: 'cafe', Icon: Coffee, iconColour: 'text-orange-500' },
+  { key: 'shopping',   label: 'Shopping',     type: 'shopping', Icon: ShoppingBag, iconColour: 'text-purple-500' },
 ]
 
 // Activity type for the add form
@@ -277,7 +292,7 @@ function ItineraryMarker({ item, idx, city, cityContext, isMobile }) {
           <p style={{ fontWeight: 700, marginBottom: 2, fontSize: isMobile ? 12 : 13, color: '#1A1A1A', lineHeight: 1.2 }}>{item.name}</p>
           {item.time && (
             <p style={{ color: '#666', fontSize: isMobile ? 10 : 12, display: 'flex', alignItems: 'center', gap: '4px' }}>
-              🕒 {item.time}
+              <Clock size={12} aria-hidden="true" /> {item.time}
             </p>
           )}
           {!isMobile && item.notes && (
@@ -522,20 +537,29 @@ export default function MapPanel({
       {isSpecificDay && (
         <div className="flex items-center gap-1.5 px-3 py-2 border-b border-border bg-white flex-shrink-0 overflow-x-auto w-full">
           <span className="text-[10px] font-bold uppercase tracking-widest text-tertiary mr-1 shrink-0">Discover:</span>
-          {NEARBY_CATEGORIES.map(cat => (
-            <button
-              key={cat.key}
-              onClick={() => handleCategorySearch(cat.key)}
-              disabled={isSearching}
-              className={`text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap transition-all border
-                ${selectedCategory === cat.key
-                  ? 'bg-violet-600 text-white border-violet-600 shadow-sm'
-                  : 'bg-white text-secondary border-border hover:border-violet-400 hover:text-violet-600'
-                } disabled:opacity-50`}
-            >
-              {isSearching && selectedCategory === cat.key ? '⏳' : cat.label}
-            </button>
-          ))}
+          {NEARBY_CATEGORIES.map(cat => {
+            const Icon = cat.Icon
+            const isActive = selectedCategory === cat.key
+            return (
+              <button
+                key={cat.key}
+                onClick={() => handleCategorySearch(cat.key)}
+                disabled={isSearching}
+                className={`text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap transition-all border flex items-center gap-1.5
+                  ${isActive
+                    ? 'bg-violet-600 text-white border-violet-600 shadow-sm'
+                    : 'bg-white text-secondary border-border hover:border-violet-400 hover:text-violet-600'
+                  } disabled:opacity-50`}
+              >
+                {isSearching && isActive ? (
+                  <span className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" aria-hidden="true" />
+                ) : (
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : cat.iconColour}`} aria-hidden="true" />
+                )}
+                {cat.label}
+              </button>
+            )
+          })}
           {nearbyPlaces.length > 0 && (
             <button
               onClick={() => { setSelectedCategory(null); setNearbyPlaces([]); setShowPanel(false) }}
@@ -613,7 +637,11 @@ export default function MapPanel({
                       <img src={place.photoUrl} alt={place.name} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-xl">
-                        {PIN_EMOJI[CATEGORY_TO_TYPE[selectedCategory ?? '']] ?? '📍'}
+                        {(() => {
+                          const Icon = PIN_ICON[CATEGORY_TO_TYPE[selectedCategory ?? '']] ?? MapPin
+                          const iconColor = PIN_ICON_COLOUR[CATEGORY_TO_TYPE[selectedCategory ?? '']] ?? 'text-secondary'
+                          return <Icon className={`w-5 h-5 ${iconColor}`} aria-hidden="true" />
+                        })()}
                       </div>
                     )}
                   </div>
@@ -628,7 +656,10 @@ export default function MapPanel({
                       {place.name}
                     </a>
                     {place.rating && (
-                      <p className="text-[10px] text-amber font-semibold">★ {place.rating}</p>
+                      <p className="text-[10px] text-amber font-semibold inline-flex items-center gap-1">
+                        <Star className="w-3 h-3 fill-current" aria-hidden="true" />
+                        {place.rating}
+                      </p>
                     )}
                     <button
                       onClick={() => handleAddPlace(place)}
@@ -692,7 +723,10 @@ export default function MapPanel({
                       )}
                       <p style={{ fontWeight: 700, marginBottom: 2, fontSize: isMobile ? 12 : 13, lineHeight: 1.2 }}>{place.name}</p>
                       {place.rating && (
-                        <p style={{ color: '#C4874A', fontSize: isMobile ? 10 : 11, fontWeight: 600 }}>★ {place.rating}</p>
+                        <p style={{ color: '#C4874A', fontSize: isMobile ? 10 : 11, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <Star size={12} fill="currentColor" aria-hidden="true" />
+                          {place.rating}
+                        </p>
                       )}
                       {!isMobile && place.address && (
                         <p style={{ color: '#888', fontSize: 11, marginTop: 2, lineHeight: 1.4 }}>{place.address}</p>
@@ -713,7 +747,10 @@ export default function MapPanel({
             {/* Overlay hint when no pins yet */}
             {pins.length === 0 && nearbyPlaces.length === 0 && (
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm border border-border rounded-full px-4 py-1.5 shadow-sm pointer-events-none">
-                <p className="text-xs font-body text-secondary whitespace-nowrap">📍 Pins will appear as the AI adds places</p>
+                <p className="text-xs font-body text-secondary whitespace-nowrap flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
+                  Pins will appear as the AI adds places
+                </p>
               </div>
             )}
 
@@ -728,7 +765,8 @@ export default function MapPanel({
             {/* Add success toast */}
             {addSuccess && (
               <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-green-600 text-white text-[10px] sm:text-xs font-bold rounded-full px-4 py-1.5 shadow-md z-[1000] flex items-center gap-1.5 whitespace-nowrap">
-                <span>✓</span> {addSuccess} added to Day {activeDay}!
+                <Check className="w-3.5 h-3.5" aria-hidden="true" />
+                {addSuccess} added to Day {activeDay}!
               </div>
             )}
 
@@ -742,7 +780,7 @@ export default function MapPanel({
                     : 'bg-violet-600 text-white'
                   }`}
               >
-                {showPanel ? '↓ Hide Results' : `🏘 View ${nearbyPlaces.length} results`}
+                {showPanel ? '↓ Hide Results' : <><MapPinned className="w-4 h-4" aria-hidden="true" />View {nearbyPlaces.length} results</>}
               </button>
             )}
           </div>
@@ -751,7 +789,7 @@ export default function MapPanel({
 
       {/* Legend — simplified for mobile */}
       <div className="flex items-center gap-x-4 gap-y-2 px-3 py-2 border-t border-border flex-shrink-0 flex-wrap bg-white">
-        {Object.keys(PIN_EMOJI).map(type => (
+        {Object.keys(PIN_ICON_LABEL).map(type => (
           <span key={type} className="flex items-center gap-1.5 text-[10px] sm:text-xs text-secondary font-body capitalize">
             <span className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full inline-block ${LEGEND_DOT_CLASS[type]}`} />
             {type}

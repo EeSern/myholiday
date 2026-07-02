@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import { FileText, PartyPopper, Upload } from 'lucide-react'
 
 
 type Destination = { id: string; city: string; country: string }
@@ -112,7 +113,7 @@ export default function GuideOnboarding() {
     return (
       <section className="min-h-screen bg-warmwhite flex flex-col items-center px-4 pt-24 md:pt-32">
         <div className="w-full max-w-md text-center space-y-5">
-          <div className="text-6xl">🎉</div>
+          <PartyPopper className="w-14 h-14 mx-auto text-amber" aria-hidden="true" />
           <h1 className="text-3xl font-extrabold font-display text-charcoal">
             Application Submitted!
           </h1>
@@ -243,11 +244,13 @@ export default function GuideOnboarding() {
               />
               <label htmlFor="doc-upload" className="cursor-pointer">
                 {form.document ? (
-                  <p className="text-sm font-body text-charcoal">
-                    📄 {form.document.name}
+                  <p className="text-sm font-body text-charcoal inline-flex items-center justify-center gap-2">
+                    <FileText className="w-4 h-4 text-amber" aria-hidden="true" />
+                    {form.document.name}
                   </p>
                 ) : (
                   <>
+                    <Upload className="w-6 h-6 mx-auto mb-2 text-amber" aria-hidden="true" />
                     <p className="text-sm font-semibold font-body text-amber">
                       Click to upload
                     </p>

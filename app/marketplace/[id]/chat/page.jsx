@@ -8,6 +8,7 @@ import Avatar from '@/components/ui/Avatar'
 import Modal from '@/components/ui/Modal'
 import ItineraryTimeline from '@/components/ui/ItineraryTimeline'
 import ItineraryPanel from '@/components/sections/ItineraryPanel'
+import { CircleCheckBig, CreditCard, Map, PartyPopper } from 'lucide-react'
 // Reusable Dark Header matching the Mockup
 function DarkHeader({ tag, title, description, children }) {
   return (
@@ -681,21 +682,21 @@ function ChatContent() {
                     }
                     const content = msg.content
                     if (content && content.startsWith(OFFER_ACCEPTED_TOKEN)) {
-                      return (<div key={msg.id || idx} className="flex justify-center"><div className="bg-[#EFF6FF] border border-blue-200 px-4 py-2 rounded-xl text-[12px] text-blue-700 font-medium">🎉 Traveller accepted this offer</div></div>)
+                      return (<div key={msg.id || idx} className="flex justify-center"><div className="bg-[#EFF6FF] border border-blue-200 px-4 py-2 rounded-xl text-[12px] text-blue-700 font-medium flex items-center gap-1.5"><PartyPopper className="w-3.5 h-3.5" aria-hidden="true" />Traveller accepted this offer</div></div>)
                     }
                     if (content && content.startsWith(OFFER_WITHDRAWN_TOKEN)) {
                       return (<div key={msg.id || idx} className="flex justify-center"><div className="bg-[#FEF2F2] border border-red-200 px-4 py-2 rounded-xl text-[12px] text-red-700 font-medium">Offer withdrawn by tour guide</div></div>)
                     }
                     if (content && content.startsWith(PAYMENT_ENABLED_TOKEN)) {
                       const amt = content.split(':')[1]
-                      return (<div key={msg.id || idx} className="flex justify-center"><div className="bg-[#FFFBEB] border border-amber/30 px-4 py-2 rounded-xl text-[12px] text-amber-700 font-medium">💳 Payment of {formatMYR(amt)} enabled — <a href={'/marketplace/' + listingId} className="underline font-bold">Pay Now</a></div></div>)
+                      return (<div key={msg.id || idx} className="flex justify-center"><div className="bg-[#FFFBEB] border border-amber/30 px-4 py-2 rounded-xl text-[12px] text-amber-700 font-medium flex items-center gap-1.5"><CreditCard className="w-3.5 h-3.5" aria-hidden="true" /><span>Payment of {formatMYR(amt)} enabled - <a href={'/marketplace/' + listingId} className="underline font-bold">Pay Now</a></span></div></div>)
                     }
                     if (content && content.startsWith(PAYMENT_COMPLETED_TOKEN)) {
                       const amt = content.split(':')[1]
-                      return (<div key={msg.id || idx} className="flex justify-center"><div className="bg-[#ECFDF5] border border-green-200 px-4 py-2 rounded-xl text-[12px] text-green-700 font-medium">✅ Payment of {formatMYR(amt)} completed</div></div>)
+                      return (<div key={msg.id || idx} className="flex justify-center"><div className="bg-[#ECFDF5] border border-green-200 px-4 py-2 rounded-xl text-[12px] text-green-700 font-medium flex items-center gap-1.5"><CircleCheckBig className="w-3.5 h-3.5" aria-hidden="true" />Payment of {formatMYR(amt)} completed</div></div>)
                     }
                     if (content && content.startsWith(ITINERARY_UPDATED_TOKEN)) {
-                      return (<div key={msg.id || idx} className="flex justify-center"><div className="bg-[#FFFDF5] border border-amber/20 px-4 py-2 rounded-xl text-[12px] text-amberdark font-medium">🗺️ Itinerary updated</div></div>)
+                      return (<div key={msg.id || idx} className="flex justify-center"><div className="bg-[#FFFDF5] border border-amber/20 px-4 py-2 rounded-xl text-[12px] text-amberdark font-medium flex items-center gap-1.5"><Map className="w-3.5 h-3.5" aria-hidden="true" />Itinerary updated</div></div>)
                     }
                     return (
                       <div key={msg.id || idx} className={`flex gap-3 max-w-[85%] ${isMine ? 'self-end ms-auto flex-row-reverse' : ''}`}>

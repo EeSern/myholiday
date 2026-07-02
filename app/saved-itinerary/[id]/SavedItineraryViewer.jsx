@@ -5,12 +5,13 @@ import { useRouter, useParams } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import { supabase } from '@/lib/supabase/client'
 import ItineraryPanel from '@/components/sections/ItineraryPanel'
+import { ClipboardList, Map, Utensils } from 'lucide-react'
 
 const MapPanel = dynamic(() => import('@/components/sections/MapPanel'), { ssr: false })
 
 const TABS = [
-  { id: 'itinerary', label: '📋 Itinerary' },
-  { id: 'map', label: '🗺️ Map' },
+  { id: 'itinerary', label: 'Itinerary', Icon: ClipboardList },
+  { id: 'map', label: 'Map', Icon: Map },
 ]
 
 export default function SavedItineraryViewer() {
@@ -753,7 +754,8 @@ export default function SavedItineraryViewer() {
           )}
           {tripMetadata.dietary && tripMetadata.dietary.toLowerCase() !== 'none' && (
             <span className="flex items-center gap-1.5 px-2 rounded border border-red-200 bg-red-50 text-red-700 text-[10px] font-bold uppercase leading-none h-[22px]">
-              <span className="pt-[1px]">🍽 {tripMetadata.dietary}</span>
+              <Utensils className="w-3 h-3 text-red-500" aria-hidden="true" />
+              <span className="pt-[1px]">{tripMetadata.dietary}</span>
             </span>
           )}
         </div>
@@ -846,17 +848,17 @@ export default function SavedItineraryViewer() {
 
       {/* ── Mobile bottom tab bar ── */}
       <nav className="lg:hidden flex items-stretch border-t border-border bg-white shrink-0 safe-pb">
-        {[{ id: 'itinerary', label: '📋', fullLabel: 'Itinerary' }, { id: 'map', label: '🗺️', fullLabel: 'Map' }].map(tab => (
+        {TABS.map(tab => (
           <button
             key={tab.id}
             onClick={() => setMobileTab(tab.id)}
             className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors relative
               ${mobileTab === tab.id ? 'text-charcoal' : 'text-secondary'}`}
           >
-            <span className="text-xl leading-none">{tab.label}</span>
+            <tab.Icon className="w-5 h-5" aria-hidden="true" />
             <span className={`text-[10px] font-bold uppercase tracking-wide transition-colors
               ${mobileTab === tab.id ? 'text-charcoal' : 'text-tertiary'}`}>
-              {tab.fullLabel}
+              {tab.label}
             </span>
             {mobileTab === tab.id && (
               <span className="absolute bottom-0 w-8 h-0.5 bg-charcoal rounded-full" />

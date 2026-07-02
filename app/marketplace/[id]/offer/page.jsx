@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase/client'
 import Spinner from '@/components/ui/Spinner'
 import ItineraryTimeline from '@/components/ui/ItineraryTimeline'
 import { resolveMarketplacePlatformFeeRate } from '@/lib/marketplace/payment-config'
+import { AlertTriangle, ArrowRight, Calendar, Check, MapPin, User } from 'lucide-react'
 const formatMYR = (amount) => `RM ${Number(amount).toLocaleString('en-MY', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
 const PLATFORM_FEE_RATE = resolveMarketplacePlatformFeeRate(process.env.NEXT_PUBLIC_MARKETPLACE_PLATFORM_FEE_RATE)
 const platformFeeLabel = `${Math.round(PLATFORM_FEE_RATE * 100)}% Platform Fee`
@@ -199,13 +200,13 @@ export default function SubmitOfferPage() {
     if (isNaN(price)) return null;
 
     if (price === target) {
-      return { text: 'On Target Price', color: 'text-success', icon: '✓ ' };
+      return { text: 'On Target Price', color: 'text-success', Icon: Check };
     } else if (price > target) {
-      return { text: 'Higher than Target Price', color: 'text-error', icon: '⚠️ ' };
+      return { text: 'Higher than Target Price', color: 'text-error', Icon: AlertTriangle };
     } else if (price >= target * 0.9 && price < target) {
-      return { text: 'Close to Target Price', color: 'text-[#C29665]', icon: '' };
+      return { text: 'Close to Target Price', color: 'text-[#C29665]', Icon: null };
     } else {
-      return { text: 'Lower than Target Price', color: 'text-[#3B82F6]', icon: '' };
+      return { text: 'Lower than Target Price', color: 'text-[#3B82F6]', Icon: null };
     }
   };
   const indicator = getTargetIndicator();
@@ -267,7 +268,7 @@ export default function SubmitOfferPage() {
                  {/* Item 1 */}
                  <div className="flex items-start gap-4">
                    <div className="w-9 h-9 rounded-full bg-[#F4EFEB] flex items-center justify-center shrink-0">
-                     <span className="text-[#B95945] text-lg">📍</span> 
+                     <MapPin className="w-5 h-5 text-[#B95945]" aria-hidden="true" />
                    </div>
                    <div>
                      <div className="text-[10px] text-secondary/80 font-bold tracking-widest uppercase mb-1">
@@ -282,7 +283,7 @@ export default function SubmitOfferPage() {
                  {/* Item 2 */}
                  <div className="flex items-start gap-4">
                    <div className="w-9 h-9 rounded-full bg-[#EFEFEF] flex items-center justify-center shrink-0">
-                     <span className="text-[#888] text-lg">📅</span> 
+                     <Calendar className="w-5 h-5 text-[#888]" aria-hidden="true" />
                    </div>
                    <div>
                      <div className="text-[10px] text-secondary/80 font-bold tracking-widest uppercase mb-1">
@@ -297,7 +298,7 @@ export default function SubmitOfferPage() {
                  {/* Item 3 */}
                  <div className="flex items-start gap-4">
                    <div className="w-9 h-9 rounded-full bg-[#EAEAEA] flex items-center justify-center shrink-0">
-                     <span className="text-[#6484A4] text-lg">👤</span>
+                     <User className="w-5 h-5 text-[#6484A4]" aria-hidden="true" />
                    </div>
                    <div>
                      <div className="text-[10px] text-secondary/80 font-bold tracking-widest uppercase mb-1">
@@ -356,8 +357,9 @@ export default function SubmitOfferPage() {
                       Expected Payout: <strong className="text-charcoal ml-0.5">{proposedPrice ? formatMYR(calculateExpectedPayout(parseFloat(proposedPrice))) : 'RM 0'} <span className="text-[#888] font-normal">({platformFeeLabel})</span></strong>
                    </div>
                    {indicator && (
-                     <div className={`text-[12px] font-bold ${indicator.color}`}>
-                       {indicator.icon}{indicator.text}
+                     <div className={`text-[12px] font-bold ${indicator.color} flex items-center gap-1`}>
+                       {indicator.Icon && <indicator.Icon className="w-3.5 h-3.5" aria-hidden="true" />}
+                       {indicator.text}
                      </div>
                    )}
                  </div>
@@ -389,7 +391,7 @@ export default function SubmitOfferPage() {
                     disabled={isSubmitting || !proposedPrice}
                     className="bg-[#BB8B5D] hover:bg-[#A37549] text-white px-7 py-3 rounded-[10px] text-[13px] font-bold shadow-md shadow-[#BB8B5D]/20 transition-colors flex items-center justify-center gap-2 min-w-[150px] disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isSubmitting ? <Spinner /> : 'Submit Offer →'}
+                    {isSubmitting ? <Spinner /> : <><span>Submit Offer</span><ArrowRight className="w-4 h-4" aria-hidden="true" /></>}
                   </button>
                </div>
             </div>

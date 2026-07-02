@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase/client'
 import Spinner from '@/components/ui/Spinner'
 import ListingCard from '@/components/ui/ListingCard'
 import Modal from '@/components/ui/Modal'
+import { ClipboardList, Handshake, Hourglass, MessageCircle, SquareCheckBig } from 'lucide-react'
 
 const formatMYR = (amount) => `RM ${Number(amount).toLocaleString('en-MY', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
 const OFFER_ACCEPTED_TOKEN = '__OFFER_ACCEPTED__:'
@@ -476,7 +477,7 @@ export default function MarketplacePage() {
     <div className="w-full bg-warmwhite min-h-screen font-body pb-24 -mt-7 md:-mt-6 p-4 sm:p-6 lg:px-8 [&_button:not(:disabled)]:cursor-pointer [&_button:disabled]:cursor-not-allowed">
       <section className="max-w-5xl mx-auto p-6 lg:p-12 bg-white rounded-[24px] shadow-sm border border-border/50 flex justify-center">
         <div className="text-center py-20 max-w-xl mx-auto border border-border/60 rounded-3xl bg-[#FAF9F7] shadow-sm">
-           <div className="text-[48px] mb-4">⏳</div>
+           <Hourglass className="w-12 h-12 mx-auto mb-4 text-amber" aria-hidden="true" />
            <h2 className="text-3xl font-display font-extrabold text-charcoal mb-4">Awaiting Admin Approval</h2>
            <p className="text-secondary leading-relaxed px-8 text-[15px]">
               Your tour guide account is currently being reviewed securely by our administrators. 
@@ -529,9 +530,14 @@ export default function MarketplacePage() {
 
               {/* Right Info Grid */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-6 md:mt-0 max-w-sm w-full">
-                {[["📋", "Post itinerary as listing"], ["💬", "Guides send price offers"], ["🤝", "Negotiate via chat"], ["🟩", "Confirm and book"]].map(([icon, label]) => (
+                {[
+                  [ClipboardList, "Post itinerary as listing"],
+                  [MessageCircle, "Guides send price offers"],
+                  [Handshake, "Negotiate via chat"],
+                  [SquareCheckBig, "Confirm and book"],
+                ].map(([Icon, label]) => (
                   <div key={label} className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 backdrop-blur-sm hover:bg-white/10 transition-colors">
-                    <div className="text-[22px] sm:text-[26px] mb-2 sm:mb-3">{icon}</div>
+                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 mb-2 sm:mb-3 text-amber" aria-hidden="true" />
                     <div className="text-[12px] sm:text-[13px] text-warmwhite/90 font-medium leading-snug">{label}</div>
                   </div>
                 ))}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
+import { Plane } from 'lucide-react'
 
 export default function ChatWindow({ messages = [], isLoading = false, toolStatus = null, onSend }) {
   const [input, setInput] = useState('')
@@ -30,7 +31,7 @@ export default function ChatWindow({ messages = [], isLoading = false, toolStatu
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
         {messages.length === 0 && !isLoading && (
           <div className="flex flex-col items-center justify-center h-full gap-3 text-center px-6 mt-16">
-            <span className="text-4xl">✈️</span>
+            <Plane className="w-10 h-10 text-amber" aria-hidden="true" />
             <p className="text-sm font-semibold font-body text-charcoal">Ready to plan your trip!</p>
             <p className="text-xs font-body text-secondary leading-relaxed">
               I can build a quick draft or guide you step by step once we set your trip length and pace.

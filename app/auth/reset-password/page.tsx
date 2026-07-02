@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { sendPasswordReset } from '@/lib/supabase/auth'
+import { Mail } from 'lucide-react'
 
 const RESET_COOLDOWN_SECONDS = 60
 const resetCooldownKey = (email: string) => `myholiday:password-reset:${email.toLowerCase()}`
@@ -72,7 +73,7 @@ export default function ResetPasswordPage() {
           {sent ? (
             /* Success state */
             <div className="text-center space-y-4 py-2">
-              <div className="text-5xl">📬</div>
+              <Mail className="w-12 h-12 mx-auto text-amber" aria-hidden="true" />
               <h2 className="text-xl font-extrabold font-display text-charcoal">
                 Check your inbox
               </h2>

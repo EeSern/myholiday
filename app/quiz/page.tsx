@@ -3,6 +3,33 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Check,
+  Coffee,
+  CreditCard,
+  DollarSign,
+  Footprints,
+  Gem,
+  Landmark,
+  Leaf,
+  Moon,
+  Mountain,
+  PersonStanding,
+  Snowflake,
+  Sparkles,
+  Sun,
+  Sunrise,
+  Trees,
+  Trophy,
+  Umbrella,
+  Users,
+  Utensils,
+  Waves,
+} from 'lucide-react'
+import type { ComponentType } from 'react'
 
 // ── Types ────────────────────────────────────────────────────
 type StyleOption =
@@ -26,42 +53,45 @@ interface Preferences {
 }
 
 // ── Static data ──────────────────────────────────────────────
-const STYLES: { value: StyleOption; icon: string; desc: string }[] = [
-  { value: 'Adventure', icon: '🏔️', desc: 'Hiking, climbing, thrills' },
-  { value: 'Culture', icon: '🏛️', desc: 'History, art, heritage' },
-  { value: 'Beach & Relax', icon: '🏖️', desc: 'Sun, sand, chill vibes' },
-  { value: 'Nature', icon: '🌿', desc: 'Wildlife, forests, parks' },
-  { value: 'Food & Cuisine', icon: '🍜', desc: 'Local flavours, markets' },
-  { value: 'Nightlife', icon: '🌙', desc: 'Bars, clubs, live music' },
-  { value: 'Wellness', icon: '🧘', desc: 'Spas, retreats, yoga' },
-  { value: 'Urban', icon: '🏙️', desc: 'City life, architecture' },
-  { value: 'Seclusion', icon: '🌄', desc: 'Off-the-beaten-path' },
+type QuizIcon = ComponentType<{ className?: string }>
+type IconTone = { icon: string; bg: string; selectedBg: string }
+
+const STYLES: { value: StyleOption; Icon: QuizIcon; desc: string; tone: IconTone }[] = [
+  { value: 'Adventure', Icon: Mountain, desc: 'Hiking, climbing, thrills', tone: { icon: 'text-emerald-700', bg: 'bg-emerald-50', selectedBg: 'bg-emerald-100' } },
+  { value: 'Culture', Icon: Landmark, desc: 'History, art, heritage', tone: { icon: 'text-amber-700', bg: 'bg-amber-50', selectedBg: 'bg-amber-100' } },
+  { value: 'Beach & Relax', Icon: Waves, desc: 'Sun, sand, chill vibes', tone: { icon: 'text-sky-700', bg: 'bg-sky-50', selectedBg: 'bg-sky-100' } },
+  { value: 'Nature', Icon: Leaf, desc: 'Wildlife, forests, parks', tone: { icon: 'text-green-700', bg: 'bg-green-50', selectedBg: 'bg-green-100' } },
+  { value: 'Food & Cuisine', Icon: Utensils, desc: 'Local flavours, markets', tone: { icon: 'text-orange-700', bg: 'bg-orange-50', selectedBg: 'bg-orange-100' } },
+  { value: 'Nightlife', Icon: Moon, desc: 'Bars, clubs, live music', tone: { icon: 'text-violet-700', bg: 'bg-violet-50', selectedBg: 'bg-violet-100' } },
+  { value: 'Wellness', Icon: Trees, desc: 'Spas, retreats, yoga', tone: { icon: 'text-teal-700', bg: 'bg-teal-50', selectedBg: 'bg-teal-100' } },
+  { value: 'Urban', Icon: Landmark, desc: 'City life, architecture', tone: { icon: 'text-slate-700', bg: 'bg-slate-100', selectedBg: 'bg-slate-200' } },
+  { value: 'Seclusion', Icon: Sunrise, desc: 'Off-the-beaten-path', tone: { icon: 'text-rose-700', bg: 'bg-rose-50', selectedBg: 'bg-rose-100' } },
 ]
 
-const BUDGETS: { value: Budget; icon: string; desc: string }[] = [
-  { value: 'Budget', icon: '💰', desc: 'Hostels, street food, local transport' },
-  { value: 'Mid-range', icon: '💳', desc: 'Comfortable hotels, mix of dining' },
-  { value: 'Luxury', icon: '✨', desc: 'Resorts, fine dining, private transfers' },
+const BUDGETS: { value: Budget; Icon: QuizIcon; desc: string; tone: IconTone }[] = [
+  { value: 'Budget', Icon: DollarSign, desc: 'Hostels, street food, local transport', tone: { icon: 'text-green-700', bg: 'bg-green-50', selectedBg: 'bg-green-100' } },
+  { value: 'Mid-range', Icon: CreditCard, desc: 'Comfortable hotels, mix of dining', tone: { icon: 'text-blue-700', bg: 'bg-blue-50', selectedBg: 'bg-blue-100' } },
+  { value: 'Luxury', Icon: Gem, desc: 'Resorts, fine dining, private transfers', tone: { icon: 'text-amber-700', bg: 'bg-amber-50', selectedBg: 'bg-amber-100' } },
 ]
 
-const CLIMATES: { value: Climate; icon: string; range: string }[] = [
-  { value: 'Tropical', icon: '☀️', range: 'Above 28°C' },
-  { value: 'Warm', icon: '🌤️', range: '22–28°C' },
-  { value: 'Mild', icon: '🍂', range: '15–22°C' },
-  { value: 'Cold/Snow', icon: '❄️', range: 'Below 15°C' },
+const CLIMATES: { value: Climate; Icon: QuizIcon; range: string; tone: IconTone }[] = [
+  { value: 'Tropical', Icon: Sun, range: 'Above 28°C', tone: { icon: 'text-orange-700', bg: 'bg-orange-50', selectedBg: 'bg-orange-100' } },
+  { value: 'Warm', Icon: Umbrella, range: '22–28°C', tone: { icon: 'text-yellow-700', bg: 'bg-yellow-50', selectedBg: 'bg-yellow-100' } },
+  { value: 'Mild', Icon: Leaf, range: '15–22°C', tone: { icon: 'text-lime-700', bg: 'bg-lime-50', selectedBg: 'bg-lime-100' } },
+  { value: 'Cold/Snow', Icon: Snowflake, range: 'Below 15°C', tone: { icon: 'text-cyan-700', bg: 'bg-cyan-50', selectedBg: 'bg-cyan-100' } },
 ]
 
-const GROUP_SIZES: { value: GroupSize; icon: string }[] = [
-  { value: 'Solo', icon: '🧍' },
-  { value: 'Couple', icon: '👫' },
-  { value: 'Small Group', icon: '👨‍👩‍👧' },
-  { value: 'Large Group', icon: '👥' },
+const GROUP_SIZES: { value: GroupSize; Icon: QuizIcon; tone: IconTone }[] = [
+  { value: 'Solo', Icon: PersonStanding, tone: { icon: 'text-stone-700', bg: 'bg-stone-100', selectedBg: 'bg-stone-200' } },
+  { value: 'Couple', Icon: Users, tone: { icon: 'text-pink-700', bg: 'bg-pink-50', selectedBg: 'bg-pink-100' } },
+  { value: 'Small Group', Icon: Users, tone: { icon: 'text-indigo-700', bg: 'bg-indigo-50', selectedBg: 'bg-indigo-100' } },
+  { value: 'Large Group', Icon: Users, tone: { icon: 'text-purple-700', bg: 'bg-purple-50', selectedBg: 'bg-purple-100' } },
 ]
 
-const PACES: { value: Pace; icon: string; desc: string }[] = [
-  { value: 'Relaxed', icon: '☕', desc: '1–2 activities max, slow mornings' },
-  { value: 'Balanced', icon: '🚶', desc: 'Good mix of touring and downtime' },
-  { value: 'Packed', icon: '🏃', desc: 'Action-packed, see as much as possible' },
+const PACES: { value: Pace; Icon: QuizIcon; desc: string; tone: IconTone }[] = [
+  { value: 'Relaxed', Icon: Coffee, desc: '1–2 activities max, slow mornings', tone: { icon: 'text-amber-800', bg: 'bg-amber-50', selectedBg: 'bg-amber-100' } },
+  { value: 'Balanced', Icon: Footprints, desc: 'Good mix of touring and downtime', tone: { icon: 'text-blue-700', bg: 'bg-blue-50', selectedBg: 'bg-blue-100' } },
+  { value: 'Packed', Icon: Trophy, desc: 'Action-packed, see as much as possible', tone: { icon: 'text-red-700', bg: 'bg-red-50', selectedBg: 'bg-red-100' } },
 ]
 
 const REGIONS = [
@@ -212,6 +242,7 @@ export default function QuizPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 {STYLES.map(s => {
                   const selected = prefs.styles.includes(s.value)
+                  const Icon = s.Icon
                   return (
                     <button
                       key={s.value}
@@ -222,7 +253,9 @@ export default function QuizPage() {
                           : 'border-border bg-white hover:border-amber/40 hover:bg-subtle/30'
                       }`}
                     >
-                      <span className="text-3xl mb-0.5">{s.icon}</span>
+                      <span className={`w-11 h-11 rounded-xl flex items-center justify-center mb-1 ${selected ? s.tone.selectedBg : s.tone.bg}`}>
+                        <Icon className={`w-6 h-6 ${s.tone.icon}`} aria-hidden="true" />
+                      </span>
                       <span className="text-sm font-bold font-body text-charcoal leading-tight">{s.value}</span>
                       <span className="text-xs font-body text-secondary leading-tight line-clamp-1">{s.desc}</span>
                     </button>
@@ -248,7 +281,7 @@ export default function QuizPage() {
                   >
                     <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${prefs.regions.length === REGIONS.length ? 'bg-amber border-amber' : 'border-border group-hover:border-amber/50'
                       }`}>
-                      {prefs.regions.length === REGIONS.length && <span className="text-white text-xs">✓</span>}
+                      {prefs.regions.length === REGIONS.length && <Check className="w-3 h-3 text-white" aria-hidden="true" />}
                     </div>
                     <span className="text-sm font-bold font-body text-charcoal">
                       {prefs.regions.length === REGIONS.length ? 'Deselect All' : '(Select All)'}
@@ -269,7 +302,7 @@ export default function QuizPage() {
                         >
                           <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${selected ? 'bg-amber border-amber' : 'border-border'
                             }`}>
-                            {selected && <span className="text-white text-xs">✓</span>}
+                            {selected && <Check className="w-3 h-3 text-white" aria-hidden="true" />}
                           </div>
                           <span className="text-sm font-semibold font-body text-charcoal">{r.label}</span>
                         </button>
@@ -291,6 +324,7 @@ export default function QuizPage() {
                   <div className="flex flex-col gap-4">
                     {BUDGETS.map(b => {
                       const selected = prefs.budget === b.value
+                      const Icon = b.Icon
                       return (
                         <button
                           key={b.value}
@@ -300,12 +334,14 @@ export default function QuizPage() {
                               : 'border-border bg-white hover:border-amber/50'
                             }`}
                         >
-                          <span className="text-3xl">{b.icon}</span>
+                          <span className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${selected ? b.tone.selectedBg : b.tone.bg}`}>
+                            <Icon className={`w-6 h-6 ${b.tone.icon}`} aria-hidden="true" />
+                          </span>
                           <div>
                             <p className="text-base font-semibold font-body text-charcoal">{b.value}</p>
                             <p className="text-sm font-body text-secondary">{b.desc}</p>
                           </div>
-                          {selected && <span className="ml-auto text-amber text-lg">✓</span>}
+                          {selected && <Check className="ml-auto w-5 h-5 text-amber shrink-0" aria-hidden="true" />}
                         </button>
                       )
                     })}
@@ -325,6 +361,7 @@ export default function QuizPage() {
                   <div className="grid grid-cols-2 gap-4">
                     {CLIMATES.map(c => {
                       const selected = prefs.climate === c.value
+                      const Icon = c.Icon
                       return (
                         <button
                           key={c.value}
@@ -334,7 +371,9 @@ export default function QuizPage() {
                               : 'border-border bg-white hover:border-amber/50'
                             }`}
                         >
-                          <span className="text-4xl">{c.icon}</span>
+                          <span className={`w-14 h-14 rounded-2xl flex items-center justify-center ${selected ? c.tone.selectedBg : c.tone.bg}`}>
+                            <Icon className={`w-7 h-7 ${c.tone.icon}`} aria-hidden="true" />
+                          </span>
                           <span className="text-sm font-semibold font-body text-charcoal">{c.value}</span>
                           <span className="text-xs font-body text-secondary">{c.range}</span>
                         </button>
@@ -356,6 +395,7 @@ export default function QuizPage() {
                   <div className="flex flex-col gap-4">
                     {PACES.map(p => {
                       const selected = prefs.pace === p.value
+                      const Icon = p.Icon
                       return (
                         <button
                           key={p.value}
@@ -365,12 +405,14 @@ export default function QuizPage() {
                               : 'border-border bg-white hover:border-amber/50'
                             }`}
                         >
-                          <span className="text-3xl">{p.icon}</span>
+                          <span className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${selected ? p.tone.selectedBg : p.tone.bg}`}>
+                            <Icon className={`w-6 h-6 ${p.tone.icon}`} aria-hidden="true" />
+                          </span>
                           <div>
                             <p className="text-base font-semibold font-body text-charcoal">{p.value}</p>
                             <p className="text-sm font-body text-secondary">{p.desc}</p>
                           </div>
-                          {selected && <span className="ml-auto text-amber text-lg">✓</span>}
+                          {selected && <Check className="ml-auto w-5 h-5 text-amber shrink-0" aria-hidden="true" />}
                         </button>
                       )
                     })}
@@ -393,6 +435,7 @@ export default function QuizPage() {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
                     {GROUP_SIZES.map(g => {
                       const selected = prefs.groupSize === g.value
+                      const Icon = g.Icon
                       return (
                         <button
                           key={g.value}
@@ -402,7 +445,9 @@ export default function QuizPage() {
                               : 'border-border bg-white hover:border-amber/50'
                             }`}
                         >
-                          <span className="text-3xl">{g.icon}</span>
+                          <span className={`w-11 h-11 rounded-xl flex items-center justify-center ${selected ? g.tone.selectedBg : g.tone.bg}`}>
+                            <Icon className={`w-6 h-6 ${g.tone.icon}`} aria-hidden="true" />
+                          </span>
                           <span className="text-xs font-semibold font-body text-charcoal">{g.value}</span>
                         </button>
                       )
@@ -440,7 +485,7 @@ export default function QuizPage() {
                   {/* Duration preview */}
                   {prefs.travelDateStart && prefs.travelDateEnd && prefs.travelDateEnd > prefs.travelDateStart && (
                     <div className="mt-4 p-3 rounded-lg bg-muted flex items-center gap-2">
-                      <span className="text-sm">🗓️</span>
+                      <CalendarDays className="w-4 h-4 text-secondary" aria-hidden="true" />
                       <span className="text-sm font-body text-charcoal">
                         {Math.round(
                           (new Date(prefs.travelDateEnd).getTime() - new Date(prefs.travelDateStart).getTime())
@@ -467,9 +512,10 @@ export default function QuizPage() {
                 {step > 0 ? (
                   <button
                     onClick={() => setStep(s => s - 1)}
-                    className="text-sm font-semibold font-body text-secondary hover:text-charcoal transition-colors px-4 py-2"
+                    className="text-sm font-semibold font-body text-secondary hover:text-charcoal transition-colors px-4 py-2 flex items-center gap-2"
                   >
-                    ← Back
+                    <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+                    <span>Back</span>
                   </button>
                 ) : (
                   <span />
@@ -479,9 +525,10 @@ export default function QuizPage() {
                   <button
                     onClick={() => setStep(s => s + 1)}
                     disabled={!canAdvance()}
-                    className="bg-charcoal text-warmwhite font-semibold font-body text-sm py-3.5 px-10 rounded-xl hover:bg-amber transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+                    className="bg-charcoal text-warmwhite font-semibold font-body text-sm py-3.5 px-10 rounded-xl hover:bg-amber transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm hover:shadow-md flex items-center gap-2"
                   >
-                    Continue →
+                    <span>Continue</span>
+                    <ArrowRight className="w-4 h-4" aria-hidden="true" />
                   </button>
                 ) : (
                   <button
@@ -495,7 +542,10 @@ export default function QuizPage() {
                         Finding matches…
                       </>
                     ) : (
-                      'Find My Destinations ✨'
+                      <>
+                        <span>Find My Destinations</span>
+                        <Sparkles className="w-4 h-4" aria-hidden="true" />
+                      </>
                     )}
                   </button>
                 )}

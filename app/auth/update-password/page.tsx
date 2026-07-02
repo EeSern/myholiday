@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import { CheckCircle2 } from 'lucide-react'
 
 // This page is reached when a user clicks the password-reset link in their email.
 // Supabase sends the user here with a recovery token in the URL hash.
@@ -134,7 +135,7 @@ export default function UpdatePasswordPage() {
 
           {success ? (
             <div className="text-center space-y-4 py-2">
-              <div className="text-5xl">✅</div>
+              <CheckCircle2 className="w-12 h-12 mx-auto text-green-600" aria-hidden="true" />
               <h2 className="text-xl font-extrabold font-display text-charcoal">
                 Password updated!
               </h2>

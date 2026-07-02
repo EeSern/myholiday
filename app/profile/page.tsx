@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import CountrySelect from '@/components/ui/CountrySelect'
 import { supabase } from '@/lib/supabase/client'
+import { Ban, BriefcaseBusiness, Clock, Earth, FileText, ShieldCheck, Upload } from 'lucide-react'
 
 const LANGUAGES = ['English', 'Mandarin Chinese', 'Spanish', 'Hindi', 'Arabic', 'French', 'Bengali', 'Portuguese', 'Russian', 'Japanese', 'German', 'Korean', 'Malay', 'Tamil', 'Other']
 const DIETS = ['None', 'Vegetarian', 'Vegan', 'Halal', 'Kosher', 'Gluten-free']
@@ -185,6 +186,20 @@ export default function ProfilePage() {
 
   const avatarUrl = user.user_metadata?.avatar_url
   const oauthName = user.user_metadata?.full_name || user.user_metadata?.name || ''
+  const RoleIcon = role === 'admin'
+    ? ShieldCheck
+    : role === 'guide'
+      ? guide?.verification_status === 'approved'
+        ? BriefcaseBusiness
+        : guide?.verification_status === 'rejected'
+          ? Ban
+          : Clock
+      : Earth
+  const roleLabel = role === 'admin'
+    ? 'Administrator'
+    : role === 'guide'
+      ? (guide?.verification_status === 'approved' ? 'Verified Guide' : guide?.verification_status === 'rejected' ? 'Rejected Guide' : 'Pending Verification')
+      : 'Verified Traveller'
 
   return (
     <div className="min-h-screen bg-warmwhite flex flex-col -mt-7 md:-mt-6 p-4 sm:p-6 pb-20 font-body">
@@ -207,11 +222,8 @@ export default function ProfilePage() {
                 ? (guide?.verification_status === 'approved' ? 'bg-[#EAF3DE] text-[#3B6D11]' : guide?.verification_status === 'rejected' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700')
                 : 'bg-[#EAF3DE] text-[#3B6D11]'
             }`}>
-              {role === 'admin'
-                ? '🛡️ Administrator'
-                : role === 'guide' 
-                ? (guide?.verification_status === 'approved' ? '💼 Verified Guide' : guide?.verification_status === 'rejected' ? '🚫 Rejected Guide' : '⏳ Pending Verification') 
-                : '🌎 Verified Traveller'}
+              <RoleIcon className="w-3.5 h-3.5" aria-hidden="true" />
+              {roleLabel}
             </div>
              <h1 className="font-display font-extrabold text-[32px] text-charcoal leading-none">
                 {role === 'admin' 
@@ -369,12 +381,12 @@ export default function ProfilePage() {
                    <input type="file" accept=".pdf,.jpg,.jpeg,.png" id="doc-replace" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer text-[0px]" onChange={e => setNewDoc(e.target.files?.[0] ?? null)} />
                    {newDoc ? (
                      <div className="flex flex-col items-center pointer-events-none">
-                        <span className="text-[24px] mb-2">📄</span>
+                        <FileText className="w-7 h-7 mb-2 text-[#C4874A]" aria-hidden="true" />
                         <p className="text-[14px] font-bold text-charcoal text-center line-clamp-1 px-4">{newDoc.name}</p>
                      </div>
                    ) : (
                      <div className="flex flex-col items-center pointer-events-none">
-                        <span className="text-[24px] mb-2">📤</span>
+                        <Upload className="w-7 h-7 mb-2 text-[#C4874A]" aria-hidden="true" />
                         <p className="text-[13px] font-bold text-[#C4874A]">Select a file to upload</p>
                         <p className="text-[11px] text-tertiary mt-1">.PDF, .JPG, .PNG</p>
                      </div>

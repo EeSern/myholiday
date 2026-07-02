@@ -1,5 +1,8 @@
 'use client'
 
+import { BedDouble, Check, Star, Target, Utensils } from 'lucide-react'
+import { useState, useEffect } from 'react'
+
 const TYPE_LABEL = {
   hotel:      'Hotel',
   restaurant: 'Restaurant',
@@ -7,12 +10,24 @@ const TYPE_LABEL = {
 }
 
 const TYPE_COLOUR = {
-  hotel:      'bg-amber text-warmwhite',
-  restaurant: 'bg-success text-warmwhite',
-  attraction: 'bg-charcoal text-warmwhite',
+  hotel:      'bg-amber/10 text-amber border-amber/20',
+  restaurant: 'bg-red-50 text-red-600 border-red-100',
+  attraction: 'bg-blue-50 text-blue-600 border-blue-100',
 }
 
-// Renders filled + empty stars from a numeric rating (e.g. 4.2 → ★★★★☆)
+const TYPE_ICON = {
+  hotel: BedDouble,
+  restaurant: Utensils,
+  attraction: Target,
+}
+
+const TYPE_ICON_COLOUR = {
+  hotel: 'text-amber',
+  restaurant: 'text-red-500',
+  attraction: 'text-blue-500',
+}
+
+// Renders filled and empty star icons from a numeric rating.
 function StarRating({ rating }) {
   if (!rating) return null
   const full  = Math.floor(rating)
@@ -20,16 +35,18 @@ function StarRating({ rating }) {
   const empty = 5 - full - half
 
   return (
-    <span className="text-amber text-xs tracking-tight" aria-label={`${rating} out of 5`}>
-      {'★'.repeat(full)}
-      {half ? '½' : ''}
-      <span className="text-border">{'★'.repeat(empty)}</span>
+    <span className="inline-flex items-center gap-0.5 text-amber text-xs tracking-tight" aria-label={`${rating} out of 5`}>
+      {Array.from({ length: full }).map((_, idx) => (
+        <Star key={`full-${idx}`} className="w-3 h-3 fill-current" aria-hidden="true" />
+      ))}
+      {half ? <span className="text-[10px] font-bold">1/2</span> : null}
+      {Array.from({ length: empty }).map((_, idx) => (
+        <Star key={`empty-${idx}`} className="w-3 h-3 text-border" aria-hidden="true" />
+      ))}
       <span className="ml-1 text-secondary">{rating.toFixed(1)}</span>
     </span>
   )
 }
-
-import { useState, useEffect } from 'react'
 
 export default function OptionsPanel({ options = [], selectedNames = new Set(), onSelect, onDone, city }) {
   const [quizContext, setQuizContext] = useState({ start: '', end: '', adults: 2 })
@@ -51,12 +68,12 @@ export default function OptionsPanel({ options = [], selectedNames = new Set(), 
   if (options.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center py-16 gap-3 px-4">
-        <span className="text-4xl">🏨</span>
+        <BedDouble className="w-10 h-10 text-amber" aria-hidden="true" />
         <p className="text-sm font-body text-secondary">
           Options will appear here when the AI suggests alternatives.
         </p>
         <p className="text-xs text-tertiary">
-          Try asking: "Find me a halal restaurant near the hotel."
+          Try asking: &quot;Find me a halal restaurant near the hotel.&quot;
         </p>
       </div>
     )
@@ -79,7 +96,10 @@ export default function OptionsPanel({ options = [], selectedNames = new Set(), 
             onClick={onDone}
             className="text-xs font-semibold font-body bg-charcoal text-warmwhite px-3 py-1 rounded-md hover:bg-amber transition-colors"
           >
-            Done ✓
+            <span className="inline-flex items-center gap-1">
+              <span>Done</span>
+              <Check className="w-3.5 h-3.5" aria-hidden="true" />
+            </span>
           </button>
         )}
       </div>
@@ -106,7 +126,7 @@ export default function OptionsPanel({ options = [], selectedNames = new Set(), 
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full py-3 bg-white border border-border rounded-xl text-sm font-semibold font-body text-secondary hover:text-amber hover:border-amber transition-colors shadow-sm"
             >
-              <span>🏨</span>
+              <BedDouble className="w-4 h-4 text-amber" aria-hidden="true" />
               Search all hotels on Booking.com
             </a>
           </div>
@@ -121,6 +141,8 @@ export default function OptionsPanel({ options = [], selectedNames = new Set(), 
 function OptionCard({ option, index, isAdded, onSelect, quizContext, city }) {
   const typeLabel  = TYPE_LABEL[option.type]  ?? option.type
   const typeColour = TYPE_COLOUR[option.type] ?? 'bg-muted text-charcoal'
+  const Icon = TYPE_ICON[option.type] ?? Target
+  const iconColor = TYPE_ICON_COLOUR[option.type] ?? 'text-secondary'
 
   // Construct booking.com specific deep link for hotels
   let specificBookingUrl = option.booking_url
@@ -147,14 +169,15 @@ function OptionCard({ option, index, isAdded, onSelect, quizContext, city }) {
           />
         ) : null}
         <div
-          className="flex items-center justify-center h-full text-3xl"
+          className="flex items-center justify-center h-full"
           style={{ display: option.image_url ? 'none' : 'flex' }}
         >
-          {option.type === 'hotel' ? '🏨' : option.type === 'restaurant' ? '🍽' : '🎯'}
+          <Icon className={`w-10 h-10 ${iconColor}`} aria-hidden="true" />
         </div>
 
         {/* Type badge overlaid on image */}
-        <span className={`absolute top-2 left-2 text-xs font-semibold font-body px-2 py-0.5 rounded-md ${typeColour}`}>
+        <span className={`absolute top-2 left-2 text-xs font-semibold font-body px-2 py-0.5 rounded-md border inline-flex items-center gap-1 ${typeColour}`}>
+          <Icon className={`w-3 h-3 ${iconColor}`} aria-hidden="true" />
           {typeLabel}
         </span>
 
@@ -192,7 +215,7 @@ function OptionCard({ option, index, isAdded, onSelect, quizContext, city }) {
                 ? 'bg-success-bg text-success cursor-default'
                 : 'bg-amber text-warmwhite hover:bg-amberdark'}`}
           >
-            {isAdded ? 'Added ✓' : 'Select'}
+            {isAdded ? <span className="inline-flex items-center justify-center gap-1"><span>Added</span><Check className="w-3.5 h-3.5" aria-hidden="true" /></span> : 'Select'}
           </button>
           {(specificBookingUrl || option.booking_url) && (
             <a

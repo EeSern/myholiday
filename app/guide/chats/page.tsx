@@ -8,6 +8,7 @@ import Modal from '@/components/ui/Modal'
 import ItineraryTimeline from '@/components/ui/ItineraryTimeline'
 import ItineraryPanel from '@/components/sections/ItineraryPanel'
 import Avatar from '@/components/ui/Avatar'
+import { CheckCircle2, CircleDollarSign, CreditCard, Hourglass, Map, PartyPopper } from 'lucide-react'
 
 type MarketplaceOffer = any
 type ListingRecord = any
@@ -683,7 +684,7 @@ function ChatsContent() {
               }`}>
                 {transaction?.status === 'completed' ? (
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">💰</span>
+                    <CircleDollarSign className="w-6 h-6 text-[#047857] shrink-0" aria-hidden="true" />
                     <div>
                       <p className="font-bold text-[#065F46] text-[14px]">Payment Received!</p>
                       <p className="text-[#047857] text-[12px]">The traveller has completed payment of {formatMYR(transaction.total_amount)}. Trip is confirmed.</p>
@@ -691,7 +692,7 @@ function ChatsContent() {
                   </div>
                 ) : activeThread.payment_enabled ? (
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">⏳</span>
+                    <Hourglass className="w-6 h-6 text-[#B45309] shrink-0" aria-hidden="true" />
                     <div>
                       <p className="font-bold text-[#92400E] text-[14px]">Awaiting Traveller Payment</p>
                       <p className="text-[#B45309] text-[12px]">Payment of {formatMYR(activeThread.proposed_price)} has been enabled. Waiting for the traveller to pay.</p>
@@ -700,7 +701,7 @@ function ChatsContent() {
                 ) : (
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl">🎉</span>
+                      <PartyPopper className="w-6 h-6 text-[#1D4ED8] shrink-0" aria-hidden="true" />
                       <div>
                         <p className="font-bold text-[#1E40AF] text-[14px]">Traveller Accepted Your Offer!</p>
                         <p className="text-[#1D4ED8] text-[12px]">Enable payment so the traveller can pay {formatMYR(activeThread.proposed_price)} to confirm the booking.</p>
@@ -714,7 +715,7 @@ function ChatsContent() {
                       {isEnablingPayment ? (
                         <><span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />Enabling...</>
                       ) : (
-                        <>💳 Enable Payment</>
+                        <><CreditCard className="w-4 h-4" aria-hidden="true" />Enable Payment</>
                       )}
                     </button>
                   </div>
@@ -742,7 +743,10 @@ function ChatsContent() {
               if (content?.startsWith(OFFER_ACCEPTED_TOKEN)) {
                 return (
                   <div key={msg.id || idx} className="flex justify-center">
-                    <div className="bg-[#EFF6FF] border border-blue-200 px-4 py-2 rounded-xl text-[12px] text-blue-700 font-medium">🎉 Traveller accepted this offer</div>
+                    <div className="bg-[#EFF6FF] border border-blue-200 px-4 py-2 rounded-xl text-[12px] text-blue-700 font-medium flex items-center gap-1.5">
+                      <PartyPopper className="w-3.5 h-3.5" aria-hidden="true" />
+                      Traveller accepted this offer
+                    </div>
                   </div>
                 )
               }
@@ -750,7 +754,10 @@ function ChatsContent() {
                 const amount = content.split(':')[1]
                 return (
                   <div key={msg.id || idx} className="flex justify-center">
-                    <div className="bg-[#FFFBEB] border border-amber/30 px-4 py-2 rounded-xl text-[12px] text-amber-700 font-medium">💳 Payment of {formatMYR(amount)} enabled by guide</div>
+                    <div className="bg-[#FFFBEB] border border-amber/30 px-4 py-2 rounded-xl text-[12px] text-amber-700 font-medium flex items-center gap-1.5">
+                      <CreditCard className="w-3.5 h-3.5" aria-hidden="true" />
+                      Payment of {formatMYR(amount)} enabled by guide
+                    </div>
                   </div>
                 )
               }
@@ -758,14 +765,20 @@ function ChatsContent() {
                 const amount = content.split(':')[1]
                 return (
                   <div key={msg.id || idx} className="flex justify-center">
-                    <div className="bg-[#ECFDF5] border border-green-200 px-4 py-2 rounded-xl text-[12px] text-green-700 font-medium">✅ Payment of {formatMYR(amount)} completed by traveller</div>
+                    <div className="bg-[#ECFDF5] border border-green-200 px-4 py-2 rounded-xl text-[12px] text-green-700 font-medium flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
+                      Payment of {formatMYR(amount)} completed by traveller
+                    </div>
                   </div>
                 )
               }
               if (content?.startsWith(ITINERARY_UPDATED_TOKEN)) {
                 return (
                   <div key={msg.id || idx} className="flex justify-center">
-                    <div className="bg-[#FFFDF5] border border-amber/20 px-4 py-2 rounded-xl text-[12px] text-amberdark font-medium">Itinerary updated</div>
+                    <div className="bg-[#FFFDF5] border border-amber/20 px-4 py-2 rounded-xl text-[12px] text-amberdark font-medium flex items-center gap-1.5">
+                      <Map className="w-3.5 h-3.5" aria-hidden="true" />
+                      Itinerary updated
+                    </div>
                   </div>
                 )
               }

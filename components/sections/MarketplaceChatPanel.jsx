@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabase/client'
 import Avatar from '@/components/ui/Avatar'
+import { CircleCheckBig, CreditCard, Map, PartyPopper } from 'lucide-react'
 
 const OFFER_PRICE_TOKEN = '__OFFER_PRICE__:'
 const OFFER_ACCEPTED_TOKEN = '__OFFER_ACCEPTED__:'
@@ -148,8 +149,9 @@ export default function MarketplaceChatPanel({
             if (content?.startsWith(ITINERARY_UPDATED_TOKEN)) {
               return (
                 <div key={msg.id || idx} className="flex justify-center">
-                  <div className="bg-[#FFFDF5] border border-amber/20 px-4 py-1.5 rounded-xl text-[11px] text-amberdark font-medium">
-                    🗺️ Itinerary updated
+                  <div className="bg-[#FFFDF5] border border-amber/20 px-4 py-1.5 rounded-xl text-[11px] text-amberdark font-medium flex items-center gap-1.5">
+                    <Map className="w-3.5 h-3.5" aria-hidden="true" />
+                    Itinerary updated
                   </div>
                 </div>
               )
@@ -157,8 +159,9 @@ export default function MarketplaceChatPanel({
             if (content?.startsWith(OFFER_ACCEPTED_TOKEN)) {
               return (
                 <div key={msg.id || idx} className="flex justify-center">
-                  <div className="bg-[#EFF6FF] border border-blue-200 px-4 py-1.5 rounded-xl text-[11px] text-blue-700 font-medium">
-                    🎉 Traveller accepted this offer
+                  <div className="bg-[#EFF6FF] border border-blue-200 px-4 py-1.5 rounded-xl text-[11px] text-blue-700 font-medium flex items-center gap-1.5">
+                    <PartyPopper className="w-3.5 h-3.5" aria-hidden="true" />
+                    Traveller accepted this offer
                   </div>
                 </div>
               )
@@ -176,11 +179,14 @@ export default function MarketplaceChatPanel({
               const amount = content.split(':')[1]
               return (
                 <div key={msg.id || idx} className="flex justify-center">
-                  <div className="bg-[#FFFBEB] border border-amber/30 px-4 py-1.5 rounded-xl text-[11px] text-amber-700 font-medium">
-                    💳 Payment of {formatMYR(amount)} enabled
+                  <div className="bg-[#FFFBEB] border border-amber/30 px-4 py-1.5 rounded-xl text-[11px] text-amber-700 font-medium flex items-center gap-1.5">
+                    <CreditCard className="w-3.5 h-3.5" aria-hidden="true" />
+                    <span>
+                      Payment of {formatMYR(amount)} enabled
                     {currentUserRole !== 'guide' && listingId && (
-                      <> — <a href={`/marketplace/${listingId}`} className="underline font-bold">Pay Now</a></>
+                        <> - <a href={`/marketplace/${listingId}`} className="underline font-bold">Pay Now</a></>
                     )}
+                    </span>
                   </div>
                 </div>
               )
@@ -189,8 +195,9 @@ export default function MarketplaceChatPanel({
               const amount = content.split(':')[1]
               return (
                 <div key={msg.id || idx} className="flex justify-center">
-                  <div className="bg-[#ECFDF5] border border-green-200 px-4 py-1.5 rounded-xl text-[11px] text-green-700 font-medium">
-                    ✅ Payment of {formatMYR(amount)} completed
+                  <div className="bg-[#ECFDF5] border border-green-200 px-4 py-1.5 rounded-xl text-[11px] text-green-700 font-medium flex items-center gap-1.5">
+                    <CircleCheckBig className="w-3.5 h-3.5" aria-hidden="true" />
+                    Payment of {formatMYR(amount)} completed
                   </div>
                 </div>
               )

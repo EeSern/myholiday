@@ -67,7 +67,7 @@ for _, row in df.iterrows():
     ))
 
 conn.commit()
-print(f'✅ Destinations seeded: {len(df)} rows')
+print(f'Destinations seeded: {len(df)} rows')
 
 # ============================================================
 # 2. SEED HISTORICAL TRIPS
@@ -97,7 +97,7 @@ for _, row in df2.iterrows():
     ))
 
 conn.commit()
-print(f'✅ Historical trips seeded: {len(df2)} rows')
+print(f'Historical trips seeded: {len(df2)} rows')
 
 # ── Cleanup ──────────────────────────────────────────────────
 cur.close()

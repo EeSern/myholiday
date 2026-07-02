@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
+import { ClipboardList, Map, MessageCircle } from 'lucide-react'
 import { supabase } from '@/lib/supabase/client'
 import ChatWindow from '@/components/sections/ChatWindow'
 import ItineraryPanel from '@/components/sections/ItineraryPanel'
@@ -11,15 +12,15 @@ import QuickIntakeModal from '@/components/sections/QuickIntakeModal'
 const MapPanel = dynamic(() => import('@/components/sections/MapPanel'), { ssr: false })
 
 const TABS = [
-  { id: 'itinerary', label: '📋 Itinerary' },
-  { id: 'map',       label: '🗺️ Map' },
+  { id: 'itinerary', label: 'Itinerary', Icon: ClipboardList },
+  { id: 'map',       label: 'Map', Icon: Map },
 ]
 
 // Mobile-only tab bar (includes 'chat')
 const MOBILE_TABS = [
-  { id: 'chat',      label: '💬', fullLabel: 'Chat' },
-  { id: 'itinerary', label: '📋', fullLabel: 'Itinerary' },
-  { id: 'map',       label: '🗺️', fullLabel: 'Map' },
+  { id: 'chat',      fullLabel: 'Chat', Icon: MessageCircle },
+  { id: 'itinerary', fullLabel: 'Itinerary', Icon: ClipboardList },
+  { id: 'map',       fullLabel: 'Map', Icon: Map },
 ]
 
 // ── Coordinate sanitiser ──────────────────────────────────────
@@ -724,7 +725,9 @@ export default function ItineraryPlanner() {
 
           {/* Tab switcher — desktop only */}
           <div className="hidden lg:flex items-center gap-1 pl-4 pr-4 py-2 border-b border-border bg-white shrink-0">
-            {TABS.map(tab => (
+            {TABS.map(tab => {
+              const Icon = tab.Icon
+              return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
@@ -733,9 +736,11 @@ export default function ItineraryPlanner() {
                     ? 'bg-charcoal text-warmwhite'
                     : 'text-secondary hover:text-charcoal hover:bg-muted'}`}
               >
+                <Icon className="w-4 h-4" aria-hidden="true" />
                 {tab.label}
               </button>
-            ))}
+              )
+            })}
           </div>
 
           {/* Tab content */}
@@ -787,7 +792,7 @@ export default function ItineraryPlanner() {
             className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors
               ${mobileTab === tab.id ? 'text-charcoal' : 'text-secondary'}`}
           >
-            <span className="text-xl leading-none">{tab.label}</span>
+            <tab.Icon className="w-5 h-5" aria-hidden="true" />
             <span className={`text-[10px] font-bold uppercase tracking-wide transition-colors
               ${mobileTab === tab.id ? 'text-charcoal' : 'text-tertiary'}`}>
               {tab.fullLabel}

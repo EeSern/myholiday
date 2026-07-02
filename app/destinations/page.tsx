@@ -4,6 +4,8 @@ import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import { Building2, DollarSign, Footprints, Landmark, Leaf, Moon, Mountain, Sunrise, Trees, Utensils, Waves } from 'lucide-react'
+import type { ComponentType } from 'react'
 
 // ── Types ────────────────────────────────────────────────────
 interface Destination {
@@ -79,16 +81,18 @@ const ClimateIcon = () => (
   </svg>
 )
 
-const TOP_TAGS: { key: keyof Destination; icon: string; label: string }[] = [
-  { key: 'culture', icon: '🏛️', label: 'Culture' },
-  { key: 'adventure', icon: '🏔️', label: 'Adventure' },
-  { key: 'nature', icon: '🌿', label: 'Nature' },
-  { key: 'beaches', icon: '🏖️', label: 'Beach' },
-  { key: 'nightlife', icon: '🌙', label: 'Nightlife' },
-  { key: 'cuisine', icon: '🍜', label: 'Cuisine' },
-  { key: 'wellness', icon: '🧘', label: 'Wellness' },
-  { key: 'urban', icon: '🏙️', label: 'Urban' },
-  { key: 'seclusion', icon: '🌄', label: 'Seclusion' },
+type DestinationTagIcon = ComponentType<{ className?: string }>
+
+const TOP_TAGS: { key: keyof Destination; Icon: DestinationTagIcon; iconClass: string; label: string }[] = [
+  { key: 'culture', Icon: Landmark, iconClass: 'text-amber-700', label: 'Culture' },
+  { key: 'adventure', Icon: Mountain, iconClass: 'text-emerald-700', label: 'Adventure' },
+  { key: 'nature', Icon: Leaf, iconClass: 'text-green-700', label: 'Nature' },
+  { key: 'beaches', Icon: Waves, iconClass: 'text-sky-700', label: 'Beach' },
+  { key: 'nightlife', Icon: Moon, iconClass: 'text-violet-700', label: 'Nightlife' },
+  { key: 'cuisine', Icon: Utensils, iconClass: 'text-orange-700', label: 'Cuisine' },
+  { key: 'wellness', Icon: Trees, iconClass: 'text-teal-700', label: 'Wellness' },
+  { key: 'urban', Icon: Building2, iconClass: 'text-slate-700', label: 'Urban' },
+  { key: 'seclusion', Icon: Sunrise, iconClass: 'text-rose-700', label: 'Seclusion' },
 ]
 
 function getCategoryStyle(label: string) {
@@ -251,7 +255,7 @@ function DestCard({ dest, rank, showScore }: { dest: Destination; rank: number; 
           )}
           {topTags.map(t => (
             <span key={t.key} className={`text-[10px] font-bold flex items-center gap-1 uppercase px-2 rounded border leading-none h-[22px] ${getCategoryStyle(t.label)}`}>
-              <span className="text-xs">{t.icon}</span>
+              <t.Icon className={`w-3 h-3 ${t.iconClass}`} aria-hidden="true" />
               <span className="pt-[1px]">{t.label}</span>
             </span>
           ))}
@@ -294,12 +298,12 @@ function TripMetaBanner({ meta }: { meta: TripMeta }) {
         </span>
         {meta.budget && (
           <span className="flex items-center gap-1.5 uppercase">
-            <span className="text-amber">💰</span> {meta.budget}
+            <DollarSign className="w-3.5 h-3.5 text-amber" aria-hidden="true" /> {meta.budget}
           </span>
         )}
         {meta.pace && (
           <span className="flex items-center gap-1.5 uppercase">
-            <span className="text-amber">🏃</span> {meta.pace}
+            <Footprints className="w-3.5 h-3.5 text-amber" aria-hidden="true" /> {meta.pace}
           </span>
         )}
       </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { BedDouble, Bus, Map, MapPin, NotebookPen, Soup, Target, Utensils } from 'lucide-react'
 
 // ── Time slot options for the edit dropdown ───────────────────
 const TIME_LABELS = ['All Day', 'Morning', 'Noon', 'Afternoon', 'Evening', 'Night']
@@ -19,12 +20,12 @@ const TIME_SLOTS = [
 ]
 
 const TYPE_ICON = {
-  hotel: '🏨',
-  restaurant: '🍽️',
-  attraction: '🎯',
-  transport: '✈️',
-  note: '📝',
-  food_recommendation: '🍜',
+  hotel: BedDouble,
+  restaurant: Utensils,
+  attraction: Target,
+  transport: Bus,
+  note: NotebookPen,
+  food_recommendation: Soup,
 }
 
 const TYPE_BORDER = {
@@ -34,6 +35,15 @@ const TYPE_BORDER = {
   transport: 'border-l-gray-400',
   note: 'border-l-yellow-400',
   food_recommendation: 'border-l-pink-400',
+}
+
+const TYPE_TONE = {
+  hotel: 'text-amber',
+  restaurant: 'text-red-500',
+  attraction: 'text-blue-500',
+  transport: 'text-gray-500',
+  note: 'text-yellow-600',
+  food_recommendation: 'text-pink-500',
 }
 
 // ── Time sorting helper ──────────────────────────────────────────────
@@ -224,7 +234,7 @@ export default function ItineraryPanel({ itinerary = {}, onExport, onDelete, onU
 
         {!hasContent && (
           <div className="flex flex-col items-center justify-center h-full text-center py-16 gap-3">
-            <span className="text-4xl">🗺</span>
+            <Map className="w-10 h-10 text-tertiary" aria-hidden="true" />
             <p className="text-sm font-body text-secondary">
               Your itinerary will appear here as you chat.
             </p>
@@ -398,8 +408,9 @@ function ActivityCard({ item, index, isConflict, onDelete, onUpdate, city, tripC
   const isTransport = (item.type === 'transport' || item.name.toLowerCase().includes('arrival') || item.name.toLowerCase().includes('departure') || item.name.toLowerCase().includes('flight') || item.name.toLowerCase().includes('airport')) && !isNote
 
   const effectiveType = isHotel ? 'hotel' : isTransport ? 'transport' : (item.type || 'attraction')
-  const icon = TYPE_ICON[effectiveType] ?? '📌'
+  const Icon = TYPE_ICON[effectiveType] ?? MapPin
   const borderColor = TYPE_BORDER[effectiveType] ?? 'border-l-gray-300'
+  const iconColor = TYPE_TONE[effectiveType] ?? 'text-secondary'
   const typeLabel = isHotel ? 'Hotel' : isTransport ? 'Transport' : (item.type === 'food_recommendation' ? 'Food Recommendation' : (effectiveType.charAt(0).toUpperCase() + effectiveType.slice(1)))
 
   // Conditionally fetch photo
@@ -623,7 +634,7 @@ function ActivityCard({ item, index, isConflict, onDelete, onUpdate, city, tripC
         </div>
 
         <div className="flex items-start gap-2 flex-1 min-w-0 pr-2 mt-1">
-          <span className="text-base leading-snug mt-0.5 shrink-0">{icon}</span>
+          <Icon className={`w-[18px] h-[18px] mt-0.5 shrink-0 ${iconColor}`} aria-hidden="true" />
           <div className="flex flex-col min-w-0 w-full">
             <a href={`https://www.google.com/search?q=${query}`} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className={`font-bold text-sm leading-snug hover:underline ${isConflict ? 'text-red-700' : 'text-charcoal'} truncate whitespace-normal`}>
               {item.name}

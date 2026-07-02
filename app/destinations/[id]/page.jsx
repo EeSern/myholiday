@@ -3,19 +3,20 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import BookingLinks from './BookingLinks'
+import { Building2, Landmark, Leaf, Moon, Mountain, Sparkles, Sunrise, Trees, Utensils, Waves } from 'lucide-react'
 
 // ── Helpers ───────────────────────────────────────────────────
 
 const SCORE_LABELS = {
-  culture:    { label: 'Culture',    emoji: '🏛️' },
-  adventure:  { label: 'Adventure',  emoji: '🧗' },
-  nature:     { label: 'Nature',     emoji: '🌿' },
-  beaches:    { label: 'Beaches',    emoji: '🏖️' },
-  nightlife:  { label: 'Nightlife',  emoji: '🌙' },
-  cuisine:    { label: 'Cuisine',    emoji: '🍜' },
-  wellness:   { label: 'Wellness',   emoji: '🧘' },
-  urban:      { label: 'Urban',      emoji: '🏙️' },
-  seclusion:  { label: 'Seclusion', emoji: '🌄' },
+  culture:    { label: 'Culture',    Icon: Landmark, iconClass: 'text-amber-700' },
+  adventure:  { label: 'Adventure',  Icon: Mountain, iconClass: 'text-emerald-700' },
+  nature:     { label: 'Nature',     Icon: Leaf, iconClass: 'text-green-700' },
+  beaches:    { label: 'Beaches',    Icon: Waves, iconClass: 'text-sky-700' },
+  nightlife:  { label: 'Nightlife',  Icon: Moon, iconClass: 'text-violet-700' },
+  cuisine:    { label: 'Cuisine',    Icon: Utensils, iconClass: 'text-orange-700' },
+  wellness:   { label: 'Wellness',   Icon: Trees, iconClass: 'text-teal-700' },
+  urban:      { label: 'Urban',      Icon: Building2, iconClass: 'text-slate-700' },
+  seclusion:  { label: 'Seclusion', Icon: Sunrise, iconClass: 'text-rose-700' },
 }
 
 const MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
@@ -208,7 +209,10 @@ export default async function DestinationPage({ params }) {
                 href={`/itinerary?city=${dest.id}`}
                 className="block w-full bg-amber text-warmwhite text-sm font-semibold font-body text-center py-3.5 sm:py-4 rounded-xl sm:rounded-2xl hover:bg-amberdark transition-all active:scale-[0.98] shadow-[0_0_15px_rgba(196,135,74,0.15)] hover:shadow-[0_0_20px_rgba(196,135,74,0.25)]"
               >
-                Start Planning with AI ✨
+                <span className="inline-flex items-center justify-center gap-2">
+                  Start Planning with AI
+                  <Sparkles className="w-4 h-4" aria-hidden="true" />
+                </span>
               </Link>
             </div>
           </div>
@@ -261,9 +265,11 @@ export default async function DestinationPage({ params }) {
             <section className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 shadow-sm border border-border">
               <h2 className="text-lg sm:text-xl font-extrabold font-display mb-5 sm:mb-6">Travel Style</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 sm:gap-y-5 gap-x-8">
-                {scores.map(([key, { label, emoji }]) => (
+                {scores.map(([key, { label, Icon, iconClass }]) => (
                   <div key={key} className="flex items-center gap-3">
-                    <span className="text-base flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 shrink-0 bg-subtle rounded-full">{emoji}</span>
+                    <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 shrink-0 bg-subtle rounded-full">
+                      <Icon className={`w-4 h-4 ${iconClass}`} aria-hidden="true" />
+                    </span>
                     <span className="text-xs sm:text-sm font-semibold font-body text-charcoal w-20 sm:w-24 shrink-0">{label}</span>
                     <ScoreBar value={dest[key]} />
                     <span className="text-xs font-semibold font-body text-secondary w-8 text-right shrink-0">{dest[key]}/5</span>

@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { useState, useEffect } from 'react'
 import Spinner from '@/components/ui/Spinner'
 import Link from 'next/link'
+import { CalendarDays } from 'lucide-react'
 
 const CalendarIcon = () => (
   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -94,7 +95,7 @@ export default function SchedulePage() {
           </div>
         ) : offers.length === 0 ? (
           <div className="py-20 text-center border-2 border-dashed border-border rounded-2xl">
-            <div className="text-4xl mb-4">📅</div>
+            <CalendarDays className="w-10 h-10 mx-auto mb-4 text-amber" aria-hidden="true" />
             <h2 className="text-xl font-display font-bold text-charcoal mb-2">No Scheduled Tours</h2>
             <p className="text-secondary text-sm max-w-sm mx-auto mb-6">
               You don&apos;t have any accepted offers yet. Browse the marketplace to find new opportunities!

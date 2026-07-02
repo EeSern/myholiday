@@ -15,6 +15,7 @@ import Modal from '@/components/ui/Modal'
 import Avatar from '@/components/ui/Avatar'
 import ChatWindow from '@/components/sections/ChatWindow'
 import MarketplaceChatPanel from '@/components/sections/MarketplaceChatPanel'
+import { AlertTriangle, Calendar, CircleCheckBig, CreditCard, Hourglass, Map, MapPin, MessageCircle, PartyPopper } from 'lucide-react'
 
 // Derive frontend display status
 function getDisplayStatus(dbStatus, offerCount) {
@@ -701,7 +702,7 @@ function ListingDetailContent() {
           <div className="flex flex-col flex-1">
             {listing.is_suspended && (
               <div className="bg-red-50 border border-red-200 rounded-2xl p-5 sm:p-6 mb-8 flex items-start gap-4 shadow-sm">
-                <div className="text-3xl mt-1">⚠️</div>
+                <AlertTriangle className="w-8 h-8 mt-1 text-error shrink-0" aria-hidden="true" />
                 <div>
                   <h3 className="text-error font-bold text-lg mb-1 tracking-tight">Listing Suspended</h3>
                   <p className="text-error/80 text-[14px] leading-relaxed">
@@ -713,7 +714,7 @@ function ListingDetailContent() {
             
             {showSuccess && (
               <div className="bg-[#EDFDF3] border border-[#BCE7D0] rounded-2xl p-5 sm:p-6 mb-8 flex items-start gap-4 shadow-sm">
-                <div className="text-3xl mt-1">🎉</div>
+                <PartyPopper className="w-8 h-8 mt-1 text-[#036A38] shrink-0" aria-hidden="true" />
                 <div>
                   <h3 className="text-[#036A38] font-bold text-lg mb-1 tracking-tight">Success! Your itinerary is live on the marketplace.</h3>
                   <p className="text-[#13844D] text-[14px] leading-relaxed">
@@ -788,7 +789,7 @@ function ListingDetailContent() {
                 return (
                   <div className="bg-[#ECFDF5] border-b border-green-200 p-6 sm:p-8">
                     <div className="flex items-start gap-4">
-                      <div className="text-3xl">✅</div>
+                      <CircleCheckBig className="w-8 h-8 text-[#047857] shrink-0" aria-hidden="true" />
                       <div className="flex-1">
                         <h3 className="font-display font-extrabold text-[#065F46] text-xl mb-1">Payment Complete!</h3>
                         <p className="text-[#047857] text-sm mb-3">Your booking is fully confirmed. The tour guide will coordinate the trip details with you.</p>
@@ -811,7 +812,7 @@ function ListingDetailContent() {
                 return (
                   <div className="bg-[#FFFBEB] border-b border-amber/30 p-6 sm:p-8">
                     <div className="flex items-start gap-4">
-                      <div className="text-3xl">💳</div>
+                      <CreditCard className="w-8 h-8 text-amber-700 shrink-0" aria-hidden="true" />
                       <div className="flex-1">
                         <h3 className="font-display font-extrabold text-charcoal text-xl mb-1">Complete Your Payment</h3>
                         <p className="text-secondary text-sm mb-4">Your tour guide has enabled payment. Complete your mock payment to confirm the booking.</p>
@@ -848,7 +849,7 @@ function ListingDetailContent() {
               return (
                 <div className="bg-[#EFF6FF] border-b border-blue-200 p-6 sm:p-8">
                   <div className="flex items-start gap-4">
-                    <div className="text-3xl">⏳</div>
+                    <Hourglass className="w-8 h-8 text-[#1D4ED8] shrink-0" aria-hidden="true" />
                     <div>
                       <h3 className="font-display font-extrabold text-[#1E40AF] text-xl mb-1">Offer Accepted!</h3>
                       <p className="text-[#1D4ED8] text-sm mb-4">Waiting for the tour guide to enable payment. You can continue chatting with the accepted tour guide.</p>
@@ -864,7 +865,9 @@ function ListingDetailContent() {
               <div className={`flex flex-col ${displayedTravellerOffers.length === 0 ? 'items-center justify-center text-center py-6' : ''} relative overflow-hidden`}>
                 {displayedTravellerOffers.length === 0 ? (
                   <>
-                    <div className="w-[72px] h-[72px] bg-white rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.06)] border border-border/40 flex items-center justify-center text-3xl mb-6">⏳</div>
+                    <div className="w-[72px] h-[72px] bg-white rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.06)] border border-border/40 flex items-center justify-center mb-6">
+                      <Hourglass className="w-8 h-8 text-secondary" aria-hidden="true" />
+                    </div>
                     <h2 className="text-[24px] font-display font-extrabold text-charcoal mb-4">Waiting for Offers</h2>
                     <p className="text-secondary/80 text-[13px] leading-relaxed max-w-[240px] mb-8">Tour guides are reviewing your itinerary. Sit tight!</p>
                     {listing.status !== 'confirmed' && (
@@ -875,7 +878,7 @@ function ListingDetailContent() {
                   <div className="w-full flex flex-col h-full">
                     <div className="flex items-center justify-between mb-6">
                       <h2 className="text-[20px] font-display font-extrabold text-charcoal">{listing?.status === 'confirmed' ? 'Accepted Offer' : `${offers.length} Offers Received`}</h2>
-                      <div className="text-3xl">💬</div>
+                      <MessageCircle className="w-8 h-8 text-amber" aria-hidden="true" />
                     </div>
                     <div className="flex flex-col gap-4 flex-1 overflow-y-auto mb-6 pr-1">
                       {displayedTravellerOffers.map(offer => (
@@ -909,7 +912,9 @@ function ListingDetailContent() {
             {/* Traveller's Itinerary Timeline */}
             <div className="bg-white border border-border/80 rounded-[24px] p-6 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.03)] mb-6">
               <h2 className="text-[24px] font-display font-extrabold text-charcoal mb-6 flex items-center gap-3">
-                <span className="w-10 h-10 rounded-full bg-[#FAF9F7] border border-[#E5E0DA] flex items-center justify-center text-[18px] shrink-0">🗺️</span>
+                <span className="w-10 h-10 rounded-full bg-[#FAF9F7] border border-[#E5E0DA] flex items-center justify-center shrink-0">
+                  <Map className="w-5 h-5 text-secondary" aria-hidden="true" />
+                </span>
                 Your Proposed Itinerary
               </h2>
               <ItineraryTimeline 
@@ -1002,14 +1007,18 @@ function ListingDetailContent() {
                         </div>
                         <div className="hidden">
                           <div className="flex gap-3 items-start">
-                             <div className="w-8 h-8 rounded-full bg-[#FAF9F7] border border-[#E5E0DA] flex items-center justify-center text-[12px] shrink-0">📍</div>
+                             <div className="w-8 h-8 rounded-full bg-[#FAF9F7] border border-[#E5E0DA] flex items-center justify-center shrink-0">
+                               <MapPin className="w-4 h-4 text-secondary" aria-hidden="true" />
+                             </div>
                              <div>
                                 <div className="text-[9px] text-secondary uppercase font-bold tracking-wider mb-0.5">Location</div>
                                 <div className="text-[13px] font-bold text-charcoal">{listing.city_name}</div>
                              </div>
                           </div>
                           <div className="flex gap-3 items-start">
-                             <div className="w-8 h-8 rounded-full bg-[#FAF9F7] border border-[#E5E0DA] flex items-center justify-center text-[12px] shrink-0">📅</div>
+                             <div className="w-8 h-8 rounded-full bg-[#FAF9F7] border border-[#E5E0DA] flex items-center justify-center shrink-0">
+                               <Calendar className="w-4 h-4 text-secondary" aria-hidden="true" />
+                             </div>
                              <div>
                                 <div className="text-[9px] text-secondary uppercase font-bold tracking-wider mb-0.5">Dates</div>
                                 <div className="text-[13px] font-bold text-charcoal">{formattedDateRange} <span className="text-secondary font-medium ml-0.5">({pax})</span></div>

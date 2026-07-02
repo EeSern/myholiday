@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { BedDouble, BookOpen, Plane, Target } from 'lucide-react'
 
 interface BookingLinksProps {
   city: string
@@ -57,7 +58,7 @@ export default function BookingLinks({ city }: BookingLinksProps) {
         rel="noopener noreferrer"
         className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-amber transition-colors group"
       >
-        <span className="text-2xl">🏨</span>
+        <BedDouble className="w-6 h-6 text-amber shrink-0" aria-hidden="true" />
         <div>
           <p className="text-sm font-semibold font-body text-charcoal group-hover:text-amber transition-colors">
             Find Hotels
@@ -71,7 +72,7 @@ export default function BookingLinks({ city }: BookingLinksProps) {
         rel="noopener noreferrer"
         className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-amber transition-colors group"
       >
-        <span className="text-2xl">✈️</span>
+        <Plane className="w-6 h-6 text-sky-600 shrink-0" aria-hidden="true" />
         <div>
           <p className="text-sm font-semibold font-body text-charcoal group-hover:text-amber transition-colors">
             Find Flights
@@ -85,7 +86,7 @@ export default function BookingLinks({ city }: BookingLinksProps) {
         rel="noopener noreferrer"
         className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-amber transition-colors group"
       >
-        <span className="text-2xl">🎯</span>
+        <Target className="w-6 h-6 text-blue-500 shrink-0" aria-hidden="true" />
         <div>
           <p className="text-sm font-semibold font-body text-charcoal group-hover:text-amber transition-colors">
             Things To Do
@@ -99,7 +100,7 @@ export default function BookingLinks({ city }: BookingLinksProps) {
         rel="noopener noreferrer"
         className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-amber transition-colors group"
       >
-        <span className="text-2xl">📖</span>
+        <BookOpen className="w-6 h-6 text-emerald-600 shrink-0" aria-hidden="true" />
         <div>
           <p className="text-sm font-semibold font-body text-charcoal group-hover:text-amber transition-colors">
             Travel Guide

@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Button from '@/components/ui/Button'
 import Spinner from '@/components/ui/Spinner'
 import { supabase } from '@/lib/supabase/client'
+import { CircleDollarSign, Info, MapPin } from 'lucide-react'
 
 // ── Shared UI Sub-components ──────────────────────────
 function CityImage({ city, country, className = "" }) {
@@ -424,12 +425,14 @@ function NewListingContent() {
       {postStep === 2 && (
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
           <div style={{ background: "#fff", border: "1px solid #EBEBEB", borderRadius: 16, padding: "40px", textAlign: "center" }}>
-            <div style={{ fontSize: 40, marginBottom: 16 }}>💰</div>
+            <CircleDollarSign size={40} color="#C4874A" style={{ margin: "0 auto 16px" }} aria-hidden="true" />
             <h2 style={{ fontSize: 24, fontWeight: 800, color: "#1A1A1A", marginBottom: 8, fontFamily: "'Funnel Display', sans-serif" }}>Set a Desired Budget</h2>
             
             {/* Itinerary Summary for Verification */}
             <div style={{ background: "#F9F9F9", borderRadius: 12, padding: "12px 20px", marginBottom: 24, display: "inline-flex", alignItems: "center", gap: 12, border: "1px solid #EBEBEB" }}>
-              <div style={{ width: 32, height: 32, borderRadius: 8, background: "#C4874A", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>📍</div>
+              <div style={{ width: 32, height: 32, borderRadius: 8, background: "#C4874A", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <MapPin size={16} aria-hidden="true" />
+              </div>
               <div style={{ textAlign: "left" }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A" }}>{selectedPlan?.title || 'Untitled Itinerary'}</div>
                 <div style={{ fontSize: 11, color: "#888" }}>{selectedPlan?.destinations?.city || 'City'}, {selectedPlan?.destinations?.country || 'Country'}</div>
@@ -483,7 +486,7 @@ function NewListingContent() {
             </div>
 
             <div style={{ display: "flex", gap: 12, padding: 16, background: "#F0EBE3", borderRadius: 10, alignItems: "flex-start", marginBottom: 32 }}>
-               <div style={{ fontSize: 18 }}>ℹ️</div>
+               <Info size={18} color="#8B6A3E" aria-hidden="true" />
                <div style={{ fontSize: 12, color: "#8B6A3E", lineHeight: 1.5 }}>By posting this listing, verified local guides in your destination will be able to review your itinerary and submit competing price proposals. You are not charged until you accept an offer.</div>
             </div>
 
